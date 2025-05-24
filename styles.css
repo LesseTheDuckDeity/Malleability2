@@ -1,0 +1,1028 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    color: #4a5568;
+    background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+    min-height: 100vh;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 250px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-right: 1px solid #e2e8f0;
+    padding: 25px 0;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-header {
+    padding: 0 25px 25px;
+    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 25px;
+}
+
+.sidebar-header h2 {
+    color: #2d3748;
+    font-weight: 700;
+    font-size: 1.6rem;
+    text-align: center;
+}
+
+.sidebar-menu {
+    list-style: none;
+}
+
+.sidebar-menu li {
+    margin-bottom: 8px;
+}
+
+.menu-item {
+    display: block;
+    padding: 15px 25px;
+    color: #4a5568;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+    border-radius: 0 25px 25px 0;
+    margin-right: 15px;
+    font-weight: 500;
+}
+
+/* Pastel colors for different menu items */
+.menu-item[data-page="home"] {
+    background: linear-gradient(135deg, #fed7e2 0%, #fbb6ce 100%);
+    border-left-color: #f687b3;
+}
+
+.menu-item[data-page="biology"] {
+    background: linear-gradient(135deg, #c6f6d5 0%, #9ae6b4 100%);
+    border-left-color: #68d391;
+}
+
+.menu-item[data-page="chemistry"] {
+    background: linear-gradient(135deg, #fefcbf 0%, #faf089 100%);
+    border-left-color: #f6e05e;
+}
+
+.menu-item[data-page="physics"] {
+    background: linear-gradient(135deg, #bee3f8 0%, #90cdf4 100%);
+    border-left-color: #63b3ed;
+}
+
+.menu-item[data-page="maths"] {
+    background: linear-gradient(135deg, #e9d8fd 0%, #d6bcfa 100%);
+    border-left-color: #b794f6;
+}
+
+.menu-item[data-page="latin"] {
+    background: linear-gradient(135deg, #fed7cc 0%, #feb2a8 100%);
+    border-left-color: #fc8181;
+}
+
+.menu-item[data-page="music-theory"] {
+    background: linear-gradient(135deg, #fde68a 0%, #fcd34d 100%);
+    border-left-color: #f59e0b;
+}
+
+.menu-item[data-page="psychology"] {
+    background: linear-gradient(135deg, #fbcfe8 0%, #f3a8d3 100%);
+    border-left-color: #ed64a6;
+}
+
+.menu-item[data-page="politics"] {
+    background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
+    border-left-color: #f56565;
+}
+
+.menu-item[data-page="programming"] {
+    background: linear-gradient(135deg, #c6f6d5 0%, #9ae6b4 100%);
+    border-left-color: #48bb78;
+}
+
+.menu-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.menu-item.active {
+    transform: translateX(8px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    color: #2d3748;
+    font-weight: 600;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    margin-left: 250px;
+    padding: 35px;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+.page-header {
+    margin-bottom: 35px;
+    text-align: center;
+}
+
+.page-header h1 {
+    color: #2d3748;
+    margin-bottom: 12px;
+    font-weight: 700;
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.page-header p {
+    color: #718096;
+    font-size: 1.2rem;
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+/* Widget Styles - Apply sidebar-like styling */
+.widget {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 25px;
+    padding: 25px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Widget specific backgrounds - similar to sidebar style */
+.tasks-widget {
+    background: linear-gradient(135deg, rgba(254, 215, 226, 0.6) 0%, rgba(251, 182, 206, 0.4) 100%);
+    border-left: 5px solid #f687b3;
+}
+
+.calendar-widget {
+    background: linear-gradient(135deg, rgba(190, 227, 248, 0.6) 0%, rgba(144, 205, 244, 0.4) 100%);
+    border-left: 5px solid #63b3ed;
+}
+
+.xp-widget {
+    background: linear-gradient(135deg, rgba(233, 216, 253, 0.6) 0%, rgba(214, 188, 250, 0.4) 100%);
+    border-left: 5px solid #b794f6;
+}
+
+.quote-widget {
+    background: linear-gradient(135deg, rgba(198, 246, 213, 0.6) 0%, rgba(154, 230, 180, 0.4) 100%);
+    border-left: 5px solid #68d391;
+}
+
+.widget:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.widget h2 {
+    color: #2d3748;
+    margin-bottom: 25px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-align: center;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(226, 232, 240, 0.8);
+}
+
+/* Tasks Widget - Enhanced styling */
+.date-display {
+    margin-bottom: 20px;
+    padding: 12px 18px;
+    background: linear-gradient(135deg, rgba(247, 250, 252, 0.9) 0%, rgba(237, 242, 247, 0.7) 100%);
+    border-radius: 15px;
+    font-weight: 600;
+    color: #2d3748;
+    text-align: center;
+    border: 2px solid rgba(203, 213, 224, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.task-input {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.task-input input {
+    flex: 1;
+    padding: 15px 18px;
+    border: 2px solid rgba(226, 232, 240, 0.8);
+    border-radius: 18px;
+    font-size: 14px;
+    background: rgba(247, 250, 252, 0.9);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.task-input input:focus {
+    outline: none;
+    border-color: #a78bfa;
+    box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2);
+    background: white;
+}
+
+.task-input button {
+    padding: 15px 25px;
+    background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+    color: white;
+    border: none;
+    border-radius: 18px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.task-input button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+}
+
+/* XP Widget - Enhanced styling */
+.xp-display {
+    margin-bottom: 25px;
+    padding: 20px;
+    background: rgba(247, 250, 252, 0.6);
+    border-radius: 18px;
+    backdrop-filter: blur(5px);
+    border: 2px solid rgba(226, 232, 240, 0.5);
+}
+
+.level, .xp {
+    margin-bottom: 12px;
+    color: #2d3748;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.xp-bar {
+    width: 100%;
+    height: 16px;
+    background: rgba(226, 232, 240, 0.8);
+    border-radius: 15px;
+    overflow: hidden;
+    margin-top: 15px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+}
+
+.xp-progress {
+    height: 100%;
+    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    border-radius: 15px;
+    transition: width 0.4s ease;
+    width: 0%;
+    box-shadow: 0 2px 8px rgba(72, 187, 120, 0.3);
+}
+
+.xp-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.xp-btn {
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 18px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.xp-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.reset-btn {
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+    color: white;
+    border: none;
+    border-radius: 18px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(245, 101, 101, 0.3);
+}
+
+.reset-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 101, 101, 0.4);
+}
+
+/* Quote Widget - Enhanced styling */
+.quote-display {
+    margin-bottom: 25px;
+    padding: 25px;
+    background: linear-gradient(135deg, rgba(237, 242, 247, 0.8) 0%, rgba(226, 232, 240, 0.6) 100%);
+    border-radius: 20px;
+    border-left: 5px solid #a78bfa;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+}
+
+.quote-display::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #a78bfa, #8b5cf6, #7c3aed);
+}
+
+#quote-text {
+    font-style: italic;
+    margin-bottom: 15px;
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: #2d3748;
+    font-weight: 500;
+}
+
+#quote-author {
+    color: #4a5568;
+    font-weight: 600;
+    text-align: right;
+    font-size: 1rem;
+}
+
+#quote-author::before {
+    content: "— ";
+}
+
+.quote-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.quote-controls button {
+    padding: 12px 18px;
+    border: 2px solid rgba(226, 232, 240, 0.8);
+    background: linear-gradient(135deg, rgba(247, 250, 252, 0.9) 0%, rgba(237, 242, 247, 0.7) 100%);
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    color: #2d3748;
+    flex: 1;
+    min-width: 120px;
+    backdrop-filter: blur(5px);
+}
+
+.quote-controls button:hover {
+    background: linear-gradient(135deg, rgba(237, 242, 247, 0.9) 0%, rgba(226, 232, 240, 0.7) 100%);
+    border-color: #a78bfa;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.quote-management {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.quote-management select {
+    width: 100%;
+    max-width: 280px;
+    padding: 12px 15px;
+    border: 2px solid rgba(226, 232, 240, 0.8);
+    border-radius: 15px;
+    background: rgba(247, 250, 252, 0.9);
+    color: #2d3748;
+    font-weight: 500;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+}
+
+.quote-management select:focus {
+    outline: none;
+    border-color: #a78bfa;
+    box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.1);
+}
+
+.delete-quote-btn {
+    padding: 12px 18px;
+    background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(245, 101, 101, 0.3);
+    width: fit-content;
+    align-self: flex-start;
+}
+
+.delete-quote-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 101, 101, 0.4);
+}
+
+.add-quote-form {
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(247, 250, 252, 0.9) 0%, rgba(237, 242, 247, 0.7) 100%);
+    border-radius: 18px;
+    margin-top: 20px;
+    border: 2px solid rgba(226, 232, 240, 0.6);
+    backdrop-filter: blur(5px);
+}
+
+.add-quote-form.hidden {
+    display: none;
+}
+
+.add-quote-form input {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 12px;
+    border: 2px solid rgba(226, 232, 240, 0.8);
+    border-radius: 15px;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.add-quote-form input:focus {
+    outline: none;
+    border-color: #a78bfa;
+    box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.1);
+}
+
+.form-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.form-buttons button {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+#save-quote-btn {
+    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+}
+
+#save-quote-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+}
+
+#cancel-quote-btn {
+    background: linear-gradient(135deg, #a0aec0 0%, #718096 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(160, 174, 192, 0.3);
+}
+
+#cancel-quote-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(160, 174, 192, 0.4);
+}
+
+/* Task items - Enhanced styling */
+.task-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+    transition: all 0.3s ease;
+    border-radius: 12px;
+    margin-bottom: 5px;
+}
+
+.task-item:hover {
+    background: rgba(247, 250, 252, 0.8);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.task-item:last-child {
+    border-bottom: none;
+}
+
+.task-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.task-checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #cbd5e0;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.task-checkbox.completed {
+    background: linear-gradient(135deg, #68d391 0%, #48bb78 100%);
+    border-color: #48bb78;
+}
+
+.task-checkbox.completed::after {
+    content: '✓';
+    position: absolute;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    top: 1px;
+    left: 4px;
+}
+
+.task-text {
+    color: #2d3748;
+    font-weight: 500;
+}
+
+.task-text.completed {
+    text-decoration: line-through;
+    color: #a0aec0;
+}
+
+.task-delete {
+    color: #f56565;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.task-delete:hover {
+    background: rgba(254, 215, 215, 0.8);
+    transform: scale(1.1);
+}
+
+/* Calendar Widget - Improved and Smaller */
+.calendar-widget {
+    max-width: 100%;
+    min-height: 350px;
+}
+
+.calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 0 5px;
+}
+
+.calendar-header button {
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 100%);
+    border: 1px solid #a0aec0;
+    border-radius: 15px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 14px;
+}
+
+.calendar-header button:hover {
+    background: linear-gradient(135deg, #cbd5e0 0%, #a0aec0 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-header h3 {
+    color: #2d3748;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    max-width: 100%;
+}
+
+/* Day headers for calendar - smaller */
+.calendar-day-header {
+    font-weight: 700;
+    text-align: center;
+    padding: 8px 4px;
+    background: linear-gradient(135deg, #edf2f7 0%, #e2e8f0 100%);
+    border: 1px solid #cbd5e0;
+    border-radius: 8px;
+    color: #4a5568;
+    font-size: 11px;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    background: #f7fafc;
+    font-weight: 500;
+    font-size: 13px;
+    min-height: 35px;
+    max-height: 35px;
+}
+
+.calendar-day:hover {
+    background: linear-gradient(135deg, #edf2f7 0%, #e2e8f0 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-day.today {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: 700;
+    box-shadow: 0 3px 12px rgba(102, 126, 234, 0.4);
+}
+
+.calendar-day.has-tasks::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 6px;
+    height: 6px;
+    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(72, 187, 120, 0.5);
+}
+
+.calendar-day.other-month {
+    color: #cbd5e0;
+    background: #edf2f7;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+    
+    .main-content {
+        margin-left: 0;
+        padding: 20px;
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .widget {
+        padding: 20px;
+    }
+    
+    .quote-controls {
+        flex-direction: column;
+    }
+    
+    .quote-management {
+        flex-direction: column;
+    }
+    
+    .xp-buttons {
+        gap: 10px;
+    }
+    
+    .calendar-day {
+        min-height: 30px;
+        max-height: 30px;
+        font-size: 12px;
+    }
+    
+    .calendar-day-header {
+        padding: 6px 4px;
+        font-size: 10px;
+    }
+}
+
+/* Empty state message */
+.empty-tasks {
+    text-align: center;
+    color: #a0aec0;
+    font-style: italic;
+    padding: 25px 0;
+    font-weight: 500;
+}
+
+#tasks-list {
+    list-style: none;
+}
+
+/* Subject Pages Styling */
+.subject-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(247, 250, 252, 0.8) 100%);
+    border-radius: 25px;
+    border: 1px solid rgba(226, 232, 240, 0.6);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+}
+
+.subject-header h1 {
+    color: #2d3748;
+    margin-bottom: 15px;
+    font-weight: 700;
+    font-size: 2.8rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.subject-description {
+    color: #4a5568;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+    font-weight: 500;
+}
+
+.subject-content {
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+}
+
+.subject-section {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(247, 250, 252, 0.8) 100%);
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid rgba(226, 232, 240, 0.6);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.subject-section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.subject-section h2 {
+    color: #2d3748;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(226, 232, 240, 0.6);
+}
+
+.resource-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.resource-list li {
+    padding: 15px 20px;
+    background: linear-gradient(135deg, rgba(247, 250, 252, 0.8) 0%, rgba(237, 242, 247, 0.6) 100%);
+    border-radius: 15px;
+    border-left: 4px solid #a78bfa;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.resource-list li:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border-left-color: #8b5cf6;
+}
+
+.resource-list li strong {
+    color: #2d3748;
+    font-weight: 700;
+}
+
+.quiz-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.quiz-link {
+    display: block;
+    padding: 20px 25px;
+    background: linear-gradient(135deg, rgba(247, 250, 252, 0.9) 0%, rgba(237, 242, 247, 0.7) 100%);
+    border-radius: 18px;
+    border: 2px solid rgba(226, 232, 240, 0.6);
+    text-decoration: none;
+    color: #2d3748;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    position: relative;
+    overflow: hidden;
+}
+
+.quiz-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.quiz-link:hover::before {
+    left: 100%;
+}
+
+.quiz-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border-color: #a78bfa;
+    color: #553c9a;
+}
+
+/* Subject-specific accent colors */
+#biology .resource-list li {
+    border-left-color: #68d391;
+}
+
+#biology .quiz-link:hover {
+    border-color: #68d391;
+    color: #276749;
+}
+
+#chemistry .resource-list li {
+    border-left-color: #f6e05e;
+}
+
+#chemistry .quiz-link:hover {
+    border-color: #f6e05e;
+    color: #744210;
+}
+
+#physics .resource-list li {
+    border-left-color: #63b3ed;
+}
+
+#physics .quiz-link:hover {
+    border-color: #63b3ed;
+    color: #2c5282;
+}
+
+#maths .resource-list li {
+    border-left-color: #b794f6;
+}
+
+#maths .quiz-link:hover {
+    border-color: #b794f6;
+    color: #553c9a;
+}
+
+#latin .resource-list li {
+    border-left-color: #fc8181;
+}
+
+#latin .quiz-link:hover {
+    border-color: #fc8181;
+    color: #742a2a;
+}
+
+#music-theory .resource-list li {
+    border-left-color: #f59e0b;
+}
+
+#music-theory .quiz-link:hover {
+    border-color: #f59e0b;
+    color: #92400e;
+}
+
+#psychology .resource-list li {
+    border-left-color: #ed64a6;
+}
+
+#psychology .quiz-link:hover {
+    border-color: #ed64a6;
+    color: #97266d;
+}
+
+#politics .resource-list li {
+    border-left-color: #f56565;
+}
+
+#politics .quiz-link:hover {
+    border-color: #f56565;
+    color: #742a2a;
+}
+
+#programming .resource-list li {
+    border-left-color: #48bb78;
+}
+
+#programming .quiz-link:hover {
+    border-color: #48bb78;
+    color: #276749;
+}
+
+/* Responsive Design for Subject Pages */
+@media (max-width: 768px) {
+    .subject-header {
+        padding: 25px 20px;
+        margin-bottom: 30px;
+    }
+    
+    .subject-header h1 {
+        font-size: 2.2rem;
+    }
+    
+    .subject-description {
+        font-size: 1.1rem;
+    }
+    
+    .subject-section {
+        padding: 25px 20px;
+    }
+    
+    .quiz-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .quiz-link {
+        padding: 18px 20px;
+    }
+    
+    .resource-list li {
+        padding: 12px 15px;
+    }
+} 

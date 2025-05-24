@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malleability - Study Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Menu -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>Malleability</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#" class="menu-item active" data-page="home">Home</a></li>
+                <li><a href="#" class="menu-item" data-page="biology">Biology</a></li>
+                <li><a href="#" class="menu-item" data-page="chemistry">Chemistry</a></li>
+                <li><a href="#" class="menu-item" data-page="physics">Physics</a></li>
+                <li><a href="#" class="menu-item" data-page="maths">Maths</a></li>
+                <li><a href="#" class="menu-item" data-page="latin">Latin</a></li>
+                <li><a href="#" class="menu-item" data-page="music-theory">Music Theory</a></li>
+                <li><a href="#" class="menu-item" data-page="psychology">Psychology</a></li>
+                <li><a href="#" class="menu-item" data-page="politics">Politics</a></li>
+                <li><a href="#" class="menu-item" data-page="programming">Programming</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Home Page -->
+            <div id="home" class="page active">
+                <header class="page-header">
+                    <h1>Welcome to your study dashboard</h1>
+                    <p>Select a subject from the menu to get started.</p>
+                </header>
+
+                <div class="dashboard-grid">
+                    <!-- Today's Tasks Section -->
+                    <section class="widget tasks-widget">
+                        <h2>Today's Tasks</h2>
+                        <div class="date-display">
+                            <span id="current-date"></span>
+                        </div>
+                        <div class="task-input">
+                            <input type="text" id="task-input" placeholder="Add a new task...">
+                            <button id="add-task-btn">Add</button>
+                        </div>
+                        <ul id="tasks-list"></ul>
+                    </section>
+
+                    <!-- Calendar Widget -->
+                    <section class="widget calendar-widget">
+                        <h2>Calendar</h2>
+                        <div class="calendar-header">
+                            <button id="prev-month">&lt;</button>
+                            <h3 id="calendar-month"></h3>
+                            <button id="next-month">&gt;</button>
+                        </div>
+                        <div id="calendar-grid" class="calendar-grid"></div>
+                    </section>
+
+                    <!-- XP Tracker Widget -->
+                    <section class="widget xp-widget">
+                        <h2>XP Tracker</h2>
+                        <div class="xp-display">
+                            <div class="level">Level: <span id="current-level">1</span></div>
+                            <div class="xp">XP: <span id="current-xp">0</span> / <span id="xp-needed">100</span></div>
+                            <div class="xp-bar">
+                                <div id="xp-progress" class="xp-progress"></div>
+                            </div>
+                        </div>
+                        <div class="xp-buttons">
+                            <button class="xp-btn" data-xp="10">Read Today's Chapter</button>
+                            <button class="xp-btn" data-xp="15">Watched a Documentary</button>
+                            <button class="xp-btn" data-xp="20">Completed a Quiz</button>
+                        </div>
+                        <button id="reset-level" class="reset-btn">Reset Level</button>
+                    </section>
+
+                    <!-- Motivational Quote Widget -->
+                    <section class="widget quote-widget">
+                        <h2>Motivational Quote</h2>
+                        <div class="quote-display">
+                            <p id="quote-text"></p>
+                            <span id="quote-author"></span>
+                        </div>
+                        
+                        <!-- Quote Management -->
+                        <div class="quote-management">
+                            <select id="quote-selector">
+                                <option value="">Select a quote to manage...</option>
+                            </select>
+                            <button id="delete-quote-btn" class="delete-quote-btn">Delete Quote</button>
+                        </div>
+                        
+                        <div class="quote-controls">
+                            <button id="new-quote-btn">Show Another Quote</button>
+                            <button id="add-quote-btn">Add Quote</button>
+                        </div>
+                        
+                        <!-- Add Quote Form (hidden by default) -->
+                        <div id="add-quote-form" class="add-quote-form hidden">
+                            <input type="text" id="quote-input" placeholder="Enter quote...">
+                            <input type="text" id="author-input" placeholder="Enter author...">
+                            <div class="form-buttons">
+                                <button id="save-quote-btn">Save</button>
+                                <button id="cancel-quote-btn">Cancel</button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Biology Page -->
+            <div id="biology" class="page">
+                <div class="subject-header">
+                    <h1>Biology</h1>
+                    <p class="subject-description">Explore the fascinating world of living organisms, from molecular processes to ecosystem dynamics. Understand life in all its complexity.</p>
+                </div>
+                
+                <div class="subject-content">
+                    <section class="subject-section">
+                        <h2>📚 Recommended Resources</h2>
+                        <ul class="resource-list">
+                            <li><strong>Campbell Biology</strong> - The definitive textbook for comprehensive biology education</li>
+                            <li><strong>Khan Academy Biology</strong> - Free online courses with interactive lessons</li>
+                            <li><strong>CrashCourse Biology</strong> - Engaging video series covering major topics</li>
+                            <li><strong>Nature Education</strong> - Scientific articles and research papers</li>
+                            <li><strong>BiologyOnline</strong> - Dictionary and study guides for terminology</li>
+                            <li><strong>Coursera Molecular Biology</strong> - University-level courses from top institutions</li>
+                        </ul>
+                    </section>
+                    
+                    <section class="subject-section">
+                        <h2>🧪 Practice Quizzes</h2>
+                        <div class="quiz-grid">
+                            <a href="#" class="quiz-link" data-quiz="cell-structure">Cell Structure & Function</a>
+                            <a href="#" class="quiz-link" data-quiz="genetics">Genetics & Heredity</a>
+                            <a href="#" class="quiz-link" data-quiz="evolution">Evolution & Natural Selection</a>
+                            <a href="#" class="quiz-link" data-quiz="ecology">Ecology & Ecosystems</a>
+                            <a href="#" class="quiz-link" data-quiz="human-biology">Human Biology</a>
+                            <a href="#" class="quiz-link" data-quiz="molecular-biology">Molecular Biology</a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            
+            <!-- Chemistry Page -->
+            <div id="chemistry" class="page">
+                <div class="subject-header">
+                    <h1>Chemistry</h1>
+                    <p class="subject-description">Discover the building blocks of matter and the reactions that shape our world. From atoms to complex molecules.</p>
+                </div>
+                
+                <div class="subject-content">
+                    <section class="subject-section">
+                        <h2>📚 Recommended Resources</h2>
+                        <ul class="resource-list">
+                            <li><strong>Atkins Physical Chemistry</strong> - Advanced textbook for physical chemistry</li>
+                            <li><strong>ChemLibreTexts</strong> - Comprehensive online chemistry library</li>
+                            <li><strong>Periodic Table Pro</strong> - Interactive periodic table with detailed elements</li>
+                            <li><strong>ChemSketch</strong> - Software for drawing chemical structures</li>
+                            <li><strong>MIT Chemistry Lectures</strong> - Free university-level chemistry courses</li>
+                            <li><strong>Royal Society of Chemistry</strong> - Professional resources and journals</li>
+                        </ul>
+                    </section>
+                    
+                    <section class="subject-section">
+                        <h2>⚗️ Practice Quizzes</h2>
+                        <div class="quiz-grid">
+                            <a href="#" class="quiz-link" data-quiz="atomic-structure">Atomic Structure</a>
+                            <a href="#" class="quiz-link" data-quiz="chemical-bonding">Chemical Bonding</a>
+                            <a href="#" class="quiz-link" data-quiz="organic-chemistry">Organic Chemistry</a>
+                            <a href="#" class="quiz-link" data-quiz="acids-bases">Acids & Bases</a>
+                            <a href="#" class="quiz-link" data-quiz="thermodynamics">Thermodynamics</a>
+                            <a href="#" class="quiz-link" data-quiz="periodic-trends">Periodic Trends</a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            
+            <!-- Physics Page -->
+            <div id="physics" class="page">
+                <div class="subject-header">
+                    <h1>Physics</h1>
+                    <p class="subject-description">Uncover the fundamental laws governing the universe, from quantum mechanics to relativity and everything in between.</p>
+                </div>
+                
+                <div class="subject-content">
+                    <section class="subject-section">
+                        <h2>📚 Recommended Resources</h2>
+                        <ul class="resource-list">
+                            <li><strong>Halliday, Resnick & Walker</strong> - Comprehensive introductory physics textbook</li>
+                            <li><strong>MIT OpenCourseWare Physics</strong> - Free lectures from MIT professors</li>
+                            <li><strong>PhET Simulations</strong> - Interactive physics simulations</li>
+                            <li><strong>Feynman Lectures</strong> - Classic physics lectures online</li>
+                            <li><strong>Physics World</strong> - Latest research and discoveries</li>
+                            <li><strong>Wolfram Alpha</strong> - Computational tool for physics problems</li>
+                        </ul>
+                    </section>
+                    
+                    <section class="subject-section">
+                        <h2>⚛️ Practice Quizzes</h2>
+                        <div class="quiz-grid">
+                            <a href="#" class="quiz-link" data-quiz="mechanics">Classical Mechanics</a>
+                            <a href="#" class="quiz-link" data-quiz="electromagnetism">Electromagnetism</a>
+                            <a href="#" class="quiz-link" data-quiz="thermodynamics-physics">Thermodynamics</a>
+                            <a href="#" class="quiz-link" data-quiz="waves-optics">Waves & Optics</a>
+                            <a href="#" class="quiz-link" data-quiz="quantum-physics">Quantum Physics</a>
+                            <a href="#" class="quiz-link" data-quiz="relativity">Relativity</a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            
+            <!-- Maths Page -->
+            <div id="maths" class="page">
+                <div class="subject-header">
+                    <h1>Mathematics</h1>
+                    <p class="subject-description">Master the language of science and logic. From basic algebra to advanced calculus and beyond.</p>
+                </div>
+                
+                <div class="subject-content">
+                    <section class="subject-section">
+                        <h2>📚 Recommended Resources</h2>
+                        <ul class="resource-list">
+                            <li><strong>Khan Academy Math</strong> - Comprehensive math courses for all levels</li>
+                            <li><strong>Wolfram MathWorld</strong> - Mathematical encyclopedia and reference</li>
+                            <li><strong>Paul's Online Math Notes</strong> - Clear explanations of complex topics</li>
+                            <li><strong>3Blue1Brown</strong> - Intuitive video explanations of math concepts</li>
+                            <li><strong>Desmos Graphing Calculator</strong> - Online graphing and visualization tool</li>
+                            <li><strong>MIT Mathematics Courses</strong> - University-level mathematics</li>
+                        </ul>
+                    </section>
+                    
+                    <section class="subject-section">
+                        <h2>🔢 Practice Quizzes</h2>
+                        <div class="quiz-grid">
+                            <a href="#" class="quiz-link" data-quiz="algebra">Algebra</a>
+                            <a href="#" class="quiz-link" data-quiz="calculus">Calculus</a>
+                            <a href="#" class="quiz-link" data-quiz="geometry">Geometry</a>
+                            <a href="#" class="quiz-link" data-quiz="trigonometry">Trigonometry</a>
+                            <a href="#" class="quiz-link" data-quiz="statistics">Statistics</a>
+                            <a href="#" class="quiz-link" data-quiz="linear-algebra">Linear Algebra</a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            
+            <!-- Latin Page -->
+            <div id="latin" class="page">
+                <div class="subject-header">
+                    <h1>Latin</h1>
+                    <p class="subject-description">Explore the classical language that shaped Western civilization and continues to influence modern languages, law, and science.</p>
+                </div>
+                
+                <div class="subject-content">
+                    <section class="subject-section">
+                        <h2>📚 Recommended Resources</h2>
+                        <ul class="resource-list">
+                            <li><strong>Wheelock's Latin</strong> - The classic introductory Latin textbook</li>
+                            <li><strong>Cambridge Latin Course</strong> - Comprehensive learning program</li>
+                            <li><strong>Perseus Digital Library</strong> - Online Latin texts and dictionary</li>
+                            <li><strong>Latinum Podcast</strong> - Listen to spoken Latin content</li>
+                            <li><strong>Memrise Latin</strong> - Vocabulary building with spaced repetition</li>
+                            <li><strong>Loeb Classical Library</strong> - Parallel Latin-English texts</li>
+                        </ul>
+                    </section>
+                    
+                    <section class="subject-section">
+                        <h2>🏛️ Practice Quizzes</h2>
+                        <div class="quiz-grid">
+                            <a href="#" class="quiz-link" data-quiz="latin-grammar">Grammar Basics</a>
+                            <a href="#" class="quiz-link" data-quiz="latin-vocabulary">Vocabulary</a>
+                            <a href="#" class="quiz-link" data-quiz="latin-declensions">Declensions</a>
+                            <a href="#" class="quiz-link" data-quiz="latin-conjugations">Conjugations</a>
+                            <a href="#" class="quiz-link" data-quiz="latin-translation">Translation Practice</a>
+                            <a href="#" class="quiz-link" data-quiz="latin-culture">Roman Culture</a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            
+            <!-- Music Theory Page -->
+            <div id="music-theory" class="page">
+                <div class="subject-header">
+                    <h1>Music Theory</h1>
+                    <p class="subject-description">Understand the mathematical and artistic principles behind music composition, harmony, and musical expression.</p>
+                </div>
+                
+                <div class="subject-content">
+                    <section class="subject-section">
+                        <h2>📚 Recommended Resources</h2>
+                        <ul class="resource-list">
+                            <li><strong>Tonal Harmony</strong> - Comprehensive harmony and voice leading textbook</li>
+                            <li><strong>musictheory.net</strong> - Interactive lessons and exercises</li>
+                            <li><strong>Tenuto</strong> - Ear training and note recognition app</li>
+                            <li><strong>MuseScore</strong> - Free music notation software</li>
+                            <li><strong>Coursera Music Theory</strong> - University courses on music fundamentals</li>
+                            <li><strong>IMSLP</strong> - Free public domain sheet music library</li>
+                        </ul>
+                    </section>
+                    
+                    <section class="subject-section">
+                        <h2>🎵 Practice Quizzes</h2>
+                        <div class="quiz-grid">
+                            <a href="#" class="quiz-link" data-quiz="note-reading">Note Reading</a>
+                            <a href="#" class="quiz-link" data-quiz="intervals">Intervals</a>
+                            <a href="#" class="quiz-link" data-quiz="scales-modes">Scales & Modes</a>
+                            <a href="#" class="quiz-link" data-quiz="chord-progressions">Chord Progressions</a>
+                            <a href="#" class="quiz-link" data-quiz="rhythm">Rhythm & Time Signatures</a>
+                            <a href="#" class="quiz-link" data-quiz="ear-training">Ear Training</a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            
+            <!-- Psychology Page -->
+            <div id="psychology" class="page">
+                <div class="subject-header">
+                    <h1>Psychology</h1>
+                    <p class="subject-description">Delve into the complexities of human behavior, cognition, and mental processes that drive our actions and thoughts.</p>
+                </div>
+                
+                <div class="subject-content">
+                    <section class="subject-section">
+                        <h2>📚 Recommended Resources</h2>
+                        <ul class="resource-list">
+                            <li><strong>Psychology: The Science of Mind and Behaviour</strong> - Comprehensive introductory textbook</li>
+                            <li><strong>Coursera Psychology Courses</strong> - Yale and other top university courses</li>
+                            <li><strong>APA PsycNet</strong> - Professional psychological research database</li>
+                            <li><strong>TED-Ed Psychology</strong> - Short, engaging psychology videos</li>
+                            <li><strong>Psychology Today</strong> - Latest research and practical applications</li>
+                            <li><strong>Crash Course Psychology</strong> - Accessible video series on key topics</li>
+                        </ul>
+                    </section>
+                    
+                    <section class="subject-section">
+                        <h2>🧠 Practice Quizzes</h2>
+                        <div class="quiz-grid">
+                            <a href="#" class="quiz-link" data-quiz="cognitive-psychology">Cognitive Psychology</a>
+                            <a href="#" class="quiz-link" data-quiz="developmental">Developmental Psychology</a>
+                            <a href="#" class="quiz-link" data-quiz="social-psychology">Social Psychology</a>
+                            <a href="#" class="quiz-link" data-quiz="abnormal-psychology">Abnormal Psychology</a>
+                            <a href="#" class="quiz-link" data-quiz="research-methods">Research Methods</a>
+                            <a href="#" class="quiz-link" data-quiz="personality">Personality Psychology</a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            
+            <!-- Politics Page -->
+            <div id="politics" class="page">
+                <div class="subject-header">
+                    <h1>Politics</h1>
+                    <p class="subject-description">Analyze systems of governance, political theory, and the mechanisms that shape societies and international relations.</p>
+                </div>
+                
+                <div class="subject-content">
+                    <section class="subject-section">
+                        <h2>📚 Recommended Resources</h2>
+                        <ul class="resource-list">
+                            <li><strong>Comparative Politics</strong> - Comprehensive textbook on political systems</li>
+                            <li><strong>BBC Politics</strong> - Current political news and analysis</li>
+                            <li><strong>Foreign Affairs</strong> - International relations and policy magazine</li>
+                            <li><strong>Stanford Encyclopedia of Philosophy</strong> - Political philosophy entries</li>
+                            <li><strong>Council on Foreign Relations</strong> - Global political analysis</li>
+                            <li><strong>Political Science Quarterly</strong> - Academic political research</li>
+                        </ul>
+                    </section>
+                    
+                    <section class="subject-section">
+                        <h2>🏛️ Practice Quizzes</h2>
+                        <div class="quiz-grid">
+                            <a href="#" class="quiz-link" data-quiz="political-theory">Political Theory</a>
+                            <a href="#" class="quiz-link" data-quiz="comparative-government">Comparative Government</a>
+                            <a href="#" class="quiz-link" data-quiz="international-relations">International Relations</a>
+                            <a href="#" class="quiz-link" data-quiz="public-policy">Public Policy</a>
+                            <a href="#" class="quiz-link" data-quiz="constitutional-law">Constitutional Law</a>
+                            <a href="#" class="quiz-link" data-quiz="electoral-systems">Electoral Systems</a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            
+            <!-- Programming Page -->
+            <div id="programming" class="page">
+                <div class="subject-header">
+                    <h1>Programming</h1>
+                    <p class="subject-description">Master the art of creating software, from fundamental algorithms to advanced system design and modern development practices.</p>
+                </div>
+                
+                <div class="subject-content">
+                    <section class="subject-section">
+                        <h2>📚 Recommended Resources</h2>
+                        <ul class="resource-list">
+                            <li><strong>Clean Code</strong> - Essential book for writing maintainable code</li>
+                            <li><strong>LeetCode</strong> - Programming challenges and interview preparation</li>
+                            <li><strong>MDN Web Docs</strong> - Comprehensive web development documentation</li>
+                            <li><strong>GitHub</strong> - Version control and open source collaboration</li>
+                            <li><strong>Stack Overflow</strong> - Programming Q&A community</li>
+                            <li><strong>freeCodeCamp</strong> - Free programming courses and projects</li>
+                        </ul>
+                    </section>
+                    
+                    <section class="subject-section">
+                        <h2>💻 Practice Quizzes</h2>
+                        <div class="quiz-grid">
+                            <a href="#" class="quiz-link" data-quiz="algorithms">Algorithms & Data Structures</a>
+                            <a href="#" class="quiz-link" data-quiz="web-development">Web Development</a>
+                            <a href="#" class="quiz-link" data-quiz="object-oriented">Object-Oriented Programming</a>
+                            <a href="#" class="quiz-link" data-quiz="databases">Databases & SQL</a>
+                            <a href="#" class="quiz-link" data-quiz="software-engineering">Software Engineering</a>
+                            <a href="#" class="quiz-link" data-quiz="cybersecurity">Cybersecurity Basics</a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
