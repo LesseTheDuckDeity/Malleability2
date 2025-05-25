@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Malleability</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/profile.css">
+    <!-- Google Sign-In API -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <meta name="google-signin-client_id" content="your-google-client-id.googleusercontent.com">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Menu -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>Malleability</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="../index.html" class="menu-item" data-page="home">Home</a></li>
+                <li><a href="biology.html" class="menu-item" data-page="biology">Biology</a></li>
+                <li><a href="chemistry.html" class="menu-item" data-page="chemistry">Chemistry</a></li>
+                <li><a href="physics.html" class="menu-item" data-page="physics">Physics</a></li>
+                <li><a href="maths.html" class="menu-item" data-page="maths">Maths</a></li>
+                <li><a href="latin.html" class="menu-item" data-page="latin">Latin</a></li>
+                <li><a href="music-theory.html" class="menu-item" data-page="music-theory">Music Theory</a></li>
+                <li><a href="psychology.html" class="menu-item" data-page="psychology">Psychology</a></li>
+                <li><a href="politics.html" class="menu-item" data-page="politics">Politics</a></li>
+                <li><a href="programming.html" class="menu-item" data-page="programming">Programming</a></li>
+                <li><a href="profile.html" class="menu-item active" data-page="profile">Profile</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="profile-container">
+                <header class="page-header">
+                    <h1>Profile & Settings</h1>
+                    <p>Manage your account and personalize your learning experience.</p>
+                </header>
+
+                <!-- Authentication Section (shown when not logged in) -->
+                <section id="auth-section" class="auth-section">
+                    <div class="auth-cards">
+                        <!-- Login Card -->
+                        <div class="auth-card">
+                            <h3>🔐 Sign In</h3>
+                            <form id="login-form" class="login-form">
+                                <div class="social-login">
+                                    <button type="button" id="google-login" class="btn btn-google social-btn">
+                                        <span>🅖</span>
+                                        Continue with Google
+                                    </button>
+                                    <button type="button" id="demo-login" class="btn btn-demo social-btn">
+                                        <span>🎮</span>
+                                        Try Demo Account
+                                    </button>
+                                </div>
+                                
+                                <div class="auth-divider">or</div>
+                                
+                                <div class="form-group">
+                                    <label for="login-email" class="form-label">Email</label>
+                                    <input type="email" id="login-email" class="form-input" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="login-password" class="form-label">Password</label>
+                                    <input type="password" id="login-password" class="form-input" required>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In</button>
+                                
+                                <div class="forgot-password">
+                                    <a href="#" id="forgot-password">Forgot your password?</a>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Register Card -->
+                        <div class="auth-card">
+                            <h3>📝 Create Account</h3>
+                            <form id="register-form" class="login-form">
+                                <div class="form-group">
+                                    <label for="register-name" class="form-label">Full Name</label>
+                                    <input type="text" id="register-name" class="form-input" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="register-email" class="form-label">Email</label>
+                                    <input type="email" id="register-email" class="form-input" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="register-password" class="form-label">Password</label>
+                                    <input type="password" id="register-password" class="form-input" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="register-confirm" class="form-label">Confirm Password</label>
+                                    <input type="password" id="register-confirm" class="form-input" required>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- User Profile Section (shown when logged in) -->
+                <section id="profile-section" class="hidden">
+                    <!-- Profile Header -->
+                    <div class="user-profile">
+                        <div class="profile-header">
+                            <div class="profile-avatar" id="profile-avatar">
+                                <!-- User initials or avatar image will be inserted here -->
+                            </div>
+                            <div class="profile-info">
+                                <h2 id="profile-name">Loading...</h2>
+                                <p class="user-email" id="profile-email">Loading...</p>
+                            </div>
+                        </div>
+                        <div class="profile-actions">
+                            <button class="btn btn-secondary" id="edit-profile-btn">Edit Profile</button>
+                            <button class="btn btn-danger" id="logout-btn">Logout</button>
+                        </div>
+                    </div>
+
+                    <!-- Statistics Section -->
+                    <div class="stats-section">
+                        <h3>📊 Your Learning Stats</h3>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value" id="stat-level">1</div>
+                                <div class="stat-label">Current Level</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="stat-xp">0</div>
+                                <div class="stat-label">Total XP</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="stat-tasks">0</div>
+                                <div class="stat-label">Tasks Completed</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="stat-quotes">0</div>
+                                <div class="stat-label">Custom Quotes</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Profile Form -->
+                    <form id="profile-form" class="profile-form hidden">
+                        <h3>✏️ Edit Profile Information</h3>
+                        
+                        <!-- Avatar Upload -->
+                        <div class="form-section">
+                            <h4><span class="form-section-icon">📷</span>Profile Picture</h4>
+                            <div class="avatar-upload">
+                                <div class="avatar-preview" id="avatar-preview">
+                                    <!-- Avatar preview will be shown here -->
+                                </div>
+                                <label for="avatar-upload" class="btn btn-secondary avatar-upload-btn">
+                                    Upload Photo
+                                    <input type="file" id="avatar-upload" accept="image/*">
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Personal Information -->
+                        <div class="form-section">
+                            <h4><span class="form-section-icon">👤</span>Personal Information</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profile-first-name" class="form-label">First Name</label>
+                                    <input type="text" id="profile-first-name" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profile-last-name" class="form-label">Last Name</label>
+                                    <input type="text" id="profile-last-name" class="form-input" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profile-birth-date" class="form-label">Date of Birth</label>
+                                    <input type="date" id="profile-birth-date" class="form-input">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profile-phone" class="form-label">Phone Number</label>
+                                    <input type="tel" id="profile-phone" class="form-input">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Academic Information -->
+                        <div class="form-section">
+                            <h4><span class="form-section-icon">🎓</span>Academic Information</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profile-school" class="form-label">School/University</label>
+                                    <input type="text" id="profile-school" class="form-input">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profile-level" class="form-label">Academic Level</label>
+                                    <select id="profile-level" class="form-select">
+                                        <option value="">Select level...</option>
+                                        <option value="high-school">High School</option>
+                                        <option value="undergraduate">Undergraduate</option>
+                                        <option value="graduate">Graduate</option>
+                                        <option value="phd">PhD</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profile-major" class="form-label">Major/Field of Study</label>
+                                    <input type="text" id="profile-major" class="form-input">
+                                </div>
+                                <div class="form-group">
+                                    <label for="profile-year" class="form-label">Year of Study</label>
+                                    <select id="profile-year" class="form-select">
+                                        <option value="">Select year...</option>
+                                        <option value="1">1st Year</option>
+                                        <option value="2">2nd Year</option>
+                                        <option value="3">3rd Year</option>
+                                        <option value="4">4th Year</option>
+                                        <option value="5+">5+ Years</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Learning Preferences -->
+                        <div class="form-section">
+                            <h4><span class="form-section-icon">⚙️</span>Learning Preferences</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profile-timezone" class="form-label">Timezone</label>
+                                    <select id="profile-timezone" class="form-select">
+                                        <option value="UTC">UTC</option>
+                                        <option value="America/New_York">Eastern Time</option>
+                                        <option value="America/Chicago">Central Time</option>
+                                        <option value="America/Denver">Mountain Time</option>
+                                        <option value="America/Los_Angeles">Pacific Time</option>
+                                        <option value="Europe/London">London</option>
+                                        <option value="Europe/Paris">Paris</option>
+                                        <option value="Asia/Tokyo">Tokyo</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profile-language" class="form-label">Preferred Language</label>
+                                    <select id="profile-language" class="form-select">
+                                        <option value="en">English</option>
+                                        <option value="es">Español</option>
+                                        <option value="fr">Français</option>
+                                        <option value="de">Deutsch</option>
+                                        <option value="it">Italiano</option>
+                                        <option value="pt">Português</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-goals" class="form-label">Learning Goals</label>
+                                <textarea id="profile-goals" class="form-input" rows="3" placeholder="What are your learning objectives?"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="profile-actions">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <button type="button" class="btn btn-secondary" id="cancel-edit-btn">Cancel</button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Messages Area -->
+                <div id="messages-area"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/profile.js"></script>
+</body>
+</html> 

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variables and Data Types - Programming - Malleability</title>
+    <link rel="stylesheet" href="../../../css/main.css">
+    <link rel="stylesheet" href="../../../css/subjects.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Menu -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>Malleability</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="../../../index.html" class="menu-item" data-page="home">Home</a></li>
+                <li><a href="../../biology.html" class="menu-item" data-page="biology">Biology</a></li>
+                <li><a href="../../chemistry.html" class="menu-item" data-page="chemistry">Chemistry</a></li>
+                <li><a href="../../physics.html" class="menu-item" data-page="physics">Physics</a></li>
+                <li><a href="../../maths.html" class="menu-item" data-page="maths">Maths</a></li>
+                <li><a href="../../latin.html" class="menu-item" data-page="latin">Latin</a></li>
+                <li><a href="../../music-theory.html" class="menu-item" data-page="music-theory">Music Theory</a></li>
+                <li><a href="../../psychology.html" class="menu-item" data-page="psychology">Psychology</a></li>
+                <li><a href="../../politics.html" class="menu-item" data-page="politics">Politics</a></li>
+                <li><a href="../../programming.html" class="menu-item active" data-page="programming">Programming</a></li>
+                <li><a href="../../profile.html" class="menu-item" data-page="profile">Profile</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div id="variables-data-types" class="page active">
+                <!-- Breadcrumb Navigation -->
+                <nav class="breadcrumb">
+                    <a href="../../programming.html">Programming</a> → 
+                    <a href="../index.html">Fundamentals</a> → 
+                    <span>Variables and Data Types</span>
+                </nav>
+
+                <div class="subject-header">
+                    <h1>Variables and Data Types</h1>
+                    <p class="subject-description">Understanding the fundamental building blocks of programming: how to store and manipulate different types of data.</p>
+                </div>
+                
+                <div class="subject-content">
+                    <!-- Introduction Section -->
+                    <section class="topic-content-section">
+                        <h2>📖 Introduction to Variables</h2>
+                        <div class="content-block">
+                            <p>Variables are fundamental building blocks in programming that allow us to store, manipulate, and retrieve data. Think of a variable as a labeled container that holds a value which can change during program execution. The name "variable" comes from the mathematical concept where symbols represent values that can vary, and this concept is central to all programming languages.</p>
+                            
+                            <p>Every variable has three essential characteristics: a name (identifier), a value (the data it stores), and a type (which determines what kind of data can be stored and what operations can be performed). Understanding how variables work is crucial for writing effective programs, as they serve as the primary mechanism for storing and processing information.</p>
+                            
+                            <p>Variables enable programs to be dynamic and interactive. Without variables, programs could only work with fixed, predetermined values, making them essentially useless for real-world applications. Variables allow us to accept user input, perform calculations, store results, and build complex data structures that make modern software possible.</p>
+                        </div>
+                        
+                        <div class="content-images">
+                            <div class="content-image-grid">
+                                <div class="content-image">
+                                    <div class="image-placeholder">Variable Concept</div>
+                                    <p class="image-caption">Figure 1: Variables as labeled containers for data</p>
+                                </div>
+                                <div class="content-image">
+                                    <div class="image-placeholder">Memory Storage</div>
+                                    <p class="image-caption">Figure 2: How variables are stored in computer memory</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Primitive Data Types Section -->
+                    <section class="topic-content-section">
+                        <h2>🔢 Primitive Data Types</h2>
+                        <div class="content-block">
+                            <p>Primitive data types are the most basic forms of data that programming languages provide built-in support for. These types represent simple values and form the foundation upon which more complex data structures are built. Most programming languages include similar primitive types, though their names and specific characteristics may vary.</p>
+                            
+                            <p>Integer types store whole numbers without decimal points. Different programming languages provide various integer types with different size limits: byte (8 bits), short (16 bits), int (32 bits), and long (64 bits). The choice of integer type affects both the range of values that can be stored and the amount of memory used. Understanding these limitations is crucial for preventing overflow errors and optimizing memory usage.</p>
+                            
+                            <p>Floating-point types store decimal numbers and are essential for scientific calculations, graphics, and any application requiring fractional values. The most common types are float (32-bit) and double (64-bit), with double providing greater precision. However, floating-point arithmetic has inherent limitations due to how decimal numbers are represented in binary, leading to precision issues that programmers must understand.</p>
+                            
+                            <p>Boolean types store true/false values and are fundamental to program logic and control flow. Character types store individual letters, digits, or symbols, typically using ASCII or Unicode encoding. String types, though sometimes considered composite rather than primitive, store sequences of characters and are essential for text processing and user interaction.</p>
+                        </div>
+                        
+                        <div class="content-images">
+                            <div class="content-image-grid">
+                                <div class="content-image">
+                                    <div class="image-placeholder">Integer Types</div>
+                                    <p class="image-caption">Figure 3: Different integer types and their ranges</p>
+                                </div>
+                                <div class="content-image">
+                                    <div class="image-placeholder">Floating Point</div>
+                                    <p class="image-caption">Figure 4: Floating-point representation and precision</p>
+                                </div>
+                                <div class="content-image">
+                                    <div class="image-placeholder">Boolean Logic</div>
+                                    <p class="image-caption">Figure 5: Boolean values in logical operations</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Variable Declaration Section -->
+                    <section class="topic-content-section">
+                        <h2>🏷️ Variable Declaration and Initialization</h2>
+                        <div class="content-block">
+                            <p>Variable declaration is the process of introducing a variable to the program by specifying its name and, in many languages, its type. This tells the compiler or interpreter to allocate memory space for the variable and establish its identity within the program's namespace. The syntax for declaration varies significantly between programming languages, reflecting different philosophical approaches to type safety and programmer control.</p>
+                            
+                            <p>Statically typed languages like Java, C++, and TypeScript require explicit type declarations, which helps catch type-related errors at compile time. For example, in Java you might write "int age;" to declare an integer variable named age. Dynamically typed languages like Python and JavaScript infer types from the assigned values, offering more flexibility but potentially allowing type-related errors to occur at runtime.</p>
+                            
+                            <p>Initialization is the process of giving a variable its first value. Some languages require initialization at declaration time, while others allow variables to be declared first and initialized later. Uninitialized variables can contain garbage values (random memory contents), leading to unpredictable program behavior. Good programming practice typically involves initializing variables when they're declared to avoid such issues.</p>
+                            
+                            <p>Variable scope determines where in the program a variable can be accessed. Local variables exist only within the function or block where they're declared, while global variables can be accessed from anywhere in the program. Understanding scope is crucial for avoiding naming conflicts, managing memory efficiently, and writing maintainable code. Modern programming emphasizes limiting scope to the smallest necessary level.</p>
+                        </div>
+                        
+                        <div class="content-images">
+                            <div class="content-image-grid">
+                                <div class="content-image">
+                                    <div class="image-placeholder">Declaration Syntax</div>
+                                    <p class="image-caption">Figure 6: Variable declaration in different languages</p>
+                                </div>
+                                <div class="content-image">
+                                    <div class="image-placeholder">Static vs Dynamic</div>
+                                    <p class="image-caption">Figure 7: Static vs dynamic typing comparison</p>
+                                </div>
+                                <div class="content-image">
+                                    <div class="image-placeholder">Variable Scope</div>
+                                    <p class="image-caption">Figure 8: Local, global, and block scope</p>
+                                </div>
+                                <div class="content-image">
+                                    <div class="image-placeholder">Memory Allocation</div>
+                                    <p class="image-caption">Figure 9: Memory allocation for different variable types</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Type Conversion Section -->
+                    <section class="topic-content-section">
+                        <h2>🔄 Type Conversion and Casting</h2>
+                        <div class="content-block">
+                            <p>Type conversion, also known as type casting, is the process of changing a variable from one data type to another. This is necessary when you need to use a value of one type in a context that expects a different type. Understanding type conversion is essential for preventing data loss, avoiding runtime errors, and ensuring that calculations produce expected results.</p>
+                            
+                            <p>Implicit conversion (automatic conversion) occurs when the programming language automatically converts one type to another without explicit programmer intervention. This typically happens when converting from a smaller to a larger type (like int to double) where no data loss occurs. However, implicit conversions can sometimes lead to unexpected results, especially when mixing signed and unsigned integers or when precision is lost.</p>
+                            
+                            <p>Explicit conversion requires the programmer to explicitly specify the conversion using casting operators or conversion functions. This is necessary when converting from a larger to a smaller type (like double to int) or between incompatible types (like string to number). Explicit conversion gives the programmer control but also responsibility for handling potential data loss or conversion errors.</p>
+                            
+                            <p>Type safety mechanisms in modern programming languages help prevent dangerous conversions that could lead to data corruption or security vulnerabilities. Strongly typed languages enforce strict rules about when and how conversions can occur, while weakly typed languages are more permissive but potentially less safe. Understanding your language's type system is crucial for writing robust code.</p>
+                        </div>
+                        
+                        <div class="content-images">
+                            <div class="content-image-grid">
+                                <div class="content-image">
+                                    <div class="image-placeholder">Implicit Conversion</div>
+                                    <p class="image-caption">Figure 10: Automatic type promotion examples</p>
+                                </div>
+                                <div class="content-image">
+                                    <div class="image-placeholder">Explicit Casting</div>
+                                    <p class="image-caption">Figure 11: Manual type conversion syntax</p>
+                                </div>
+                                <div class="content-image">
+                                    <div class="image-placeholder">Data Loss</div>
+                                    <p class="image-caption">Figure 12: Potential data loss in type conversions</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Quiz Section -->
+                    <section class="topic-quiz-section">
+                        <h2>🧪 Practice Quiz</h2>
+                        <div class="quiz-container">
+                            <div class="quiz-intro">
+                                <p>Test your understanding of variables and data types with this practice quiz. Choose the best answer for each question.</p>
+                            </div>
+                            
+                            <div class="quiz-questions">
+                                <div class="quiz-question" data-question="1">
+                                    <h4>Question 1: What are the three essential characteristics of a variable?</h4>
+                                    <div class="quiz-options">
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q1" value="a">
+                                            <span>A) Name, size, location</span>
+                                        </label>
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q1" value="b">
+                                            <span>B) Name, value, type</span>
+                                        </label>
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q1" value="c">
+                                            <span>C) Type, scope, lifetime</span>
+                                        </label>
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q1" value="d">
+                                            <span>D) Declaration, initialization, assignment</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="quiz-question" data-question="2">
+                                    <h4>Question 2: Which data type is used to store true/false values?</h4>
+                                    <div class="quiz-options">
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q2" value="a">
+                                            <span>A) Integer</span>
+                                        </label>
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q2" value="b">
+                                            <span>B) Character</span>
+                                        </label>
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q2" value="c">
+                                            <span>C) Boolean</span>
+                                        </label>
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q2" value="d">
+                                            <span>D) String</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="quiz-question" data-question="3">
+                                    <h4>Question 3: What is implicit type conversion?</h4>
+                                    <div class="quiz-options">
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q3" value="a">
+                                            <span>A) Manual conversion specified by the programmer</span>
+                                        </label>
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q3" value="b">
+                                            <span>B) Automatic conversion performed by the language</span>
+                                        </label>
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q3" value="c">
+                                            <span>C) Conversion that always loses data</span>
+                                        </label>
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q3" value="d">
+                                            <span>D) Conversion between incompatible types</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="quiz-actions">
+                                <button class="btn btn-primary" id="submit-quiz">Submit Quiz</button>
+                                <button class="btn btn-secondary" id="reset-quiz">Reset</button>
+                            </div>
+                            
+                            <div class="quiz-results hidden" id="quiz-results">
+                                <h4>Quiz Results</h4>
+                                <p id="quiz-score"></p>
+                                <div id="quiz-feedback"></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Navigation -->
+                    <section class="topic-navigation">
+                        <div class="nav-buttons">
+                            <a href="../../programming.html" class="btn btn-secondary">← Back to Programming</a>
+                            <a href="control-structures.html" class="btn btn-primary">Next: Control Structures →</a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../../js/main.js"></script>
+    <script src="../../../js/quiz.js"></script>
+</body>
+</html> 

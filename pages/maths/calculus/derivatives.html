@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Derivatives - Mathematics - Malleability</title>
+    <link rel="stylesheet" href="../../../css/main.css">
+    <link rel="stylesheet" href="../../../css/subjects.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Menu -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>Malleability</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="../../../index.html" class="menu-item" data-page="home">Home</a></li>
+                <li><a href="../../biology.html" class="menu-item" data-page="biology">Biology</a></li>
+                <li><a href="../../chemistry.html" class="menu-item" data-page="chemistry">Chemistry</a></li>
+                <li><a href="../../physics.html" class="menu-item" data-page="physics">Physics</a></li>
+                <li><a href="../../maths.html" class="menu-item active" data-page="maths">Maths</a></li>
+                <li><a href="../../latin.html" class="menu-item" data-page="latin">Latin</a></li>
+                <li><a href="../../music-theory.html" class="menu-item" data-page="music-theory">Music Theory</a></li>
+                <li><a href="../../psychology.html" class="menu-item" data-page="psychology">Psychology</a></li>
+                <li><a href="../../politics.html" class="menu-item" data-page="politics">Politics</a></li>
+                <li><a href="../../programming.html" class="menu-item" data-page="programming">Programming</a></li>
+                <li><a href="../../profile.html" class="menu-item" data-page="profile">Profile</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div id="derivatives" class="page active">
+                <!-- Breadcrumb Navigation -->
+                <nav class="breadcrumb">
+                    <a href="../../maths.html">Mathematics</a> → 
+                    <a href="../index.html">Calculus</a> → 
+                    <span>Derivatives</span>
+                </nav>
+
+                <div class="subject-header">
+                    <h1>Derivatives</h1>
+                    <p class="subject-description">Understanding rates of change, slopes of curves, and the fundamental concept that revolutionized mathematics and science.</p>
+                </div>
+                
+                <div class="subject-content">
+                    <!-- Introduction Section -->
+                    <section class="topic-content-section">
+                        <h2>📖 Introduction to Derivatives</h2>
+                        <div class="content-block">
+                            <p>The derivative is one of the most fundamental concepts in calculus, representing the instantaneous rate of change of a function at any given point. This powerful mathematical tool allows us to understand how quantities change in relation to one another, from the velocity of a moving object to the slope of a curve at any point. The concept of derivatives has applications across virtually every field of science, engineering, and economics.</p>
+                            
+                            <p>Historically, the development of derivatives emerged from two classical problems: finding tangent lines to curves and determining instantaneous velocities. Both Isaac Newton and Gottfried Leibniz independently developed calculus in the 17th century, though their notations and approaches differed. Today, we use elements from both of their systems to understand and compute derivatives.</p>
+                            
+                            <p>At its core, a derivative measures how a function's output changes as its input changes, but unlike average rates of change, derivatives capture this information at a single, specific point. This instantaneous rate of change is conceptually similar to the speedometer reading in your car, which tells you your exact speed at that moment, not your average speed over a journey.</p>
+                        </div>
+                        
+                        <div class="content-images">
+                            <div class="content-image-grid">
+                                <div class="content-image">
+                                    <div class="image-placeholder">Tangent Line Problem</div>
+                                    <p class="image-caption">Figure 1: Finding tangent lines to curves</p>
+                                </div>
+                                <div class="content-image">
+                                    <div class="image-placeholder">Rate of Change</div>
+                                    <p class="image-caption">Figure 2: Instantaneous vs average rate of change</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Definition and Limit Section -->
+                    <section class="topic-content-section">
+                        <h2>📏 The Limit Definition of Derivatives</h2>
+                        <div class="content-block">
+                            <p>The formal definition of a derivative uses the concept of limits to capture the idea of instantaneous rate of change. For a function f(x), the derivative at point x = a is defined as the limit: f'(a) = lim[h→0] [f(a+h) - f(a)]/h, provided this limit exists. This definition elegantly bridges the gap between average rates of change over intervals and instantaneous rates at specific points.</p>
+                            
+                            <p>To understand this definition, imagine calculating the slope of a secant line connecting two points on a curve: (a, f(a)) and (a+h, f(a+h)). As h approaches zero, these two points get closer together, and the secant line approaches the tangent line at point a. The slope of this tangent line is precisely the derivative at that point.</p>
+                            
+                            <p>The process of finding a derivative using this limit definition is called differentiation from first principles. While this method can be computationally intensive, it provides deep insight into the nature of derivatives and serves as the foundation for all differentiation rules we use in practice.</p>
+                            
+                            <p>Different notation systems exist for derivatives, each with its own advantages. Leibniz notation (dy/dx) emphasizes the ratio-like nature of derivatives, while Lagrange notation (f'(x)) is more compact. Newton's dot notation (ẋ) is particularly useful in physics for time derivatives. Understanding these different notations is essential for reading mathematical and scientific literature.</p>
+                        </div>
+                        
+                        <div class="content-images">
+                            <div class="content-image-grid">
+                                <div class="content-image">
+                                    <div class="image-placeholder">Limit Definition</div>
+                                    <p class="image-caption">Figure 3: Visual representation of derivative limit</p>
+                                </div>
+                                <div class="content-image">
+                                    <div class="image-placeholder">Secant to Tangent</div>
+                                    <p class="image-caption">Figure 4: Secant line approaching tangent line</p>
+                                </div>
+                                <div class="content-image">
+                                    <div class="image-placeholder">Derivative Notations</div>
+                                    <p class="image-caption">Figure 5: Different notation systems</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Differentiation Rules Section -->
+                    <section class="topic-content-section">
+                        <h2>⚙️ Basic Differentiation Rules</h2>
+                        <div class="content-block">
+                            <p>Rather than computing every derivative from first principles, mathematicians have developed a set of rules that make differentiation much more efficient. These rules include the power rule, product rule, quotient rule, and chain rule, each designed to handle specific types of functions and combinations thereof.</p>
+                            
+                            <p>The power rule states that for f(x) = x^n, the derivative is f'(x) = nx^(n-1). This simple rule handles polynomial terms efficiently. For example, the derivative of x³ is 3x², and the derivative of x^(-2) is -2x^(-3). The power rule also applies to fractional and negative exponents, making it incredibly versatile.</p>
+                            
+                            <p>The product rule and quotient rule help us differentiate functions that are products or quotients of simpler functions. The product rule states that (fg)' = f'g + fg', while the quotient rule gives us (f/g)' = (f'g - fg')/g². These rules are essential when dealing with complex expressions that cannot be simplified before differentiation.</p>
+                            
+                            <p>The chain rule is perhaps the most powerful differentiation rule, allowing us to find derivatives of composite functions. If y = f(g(x)), then dy/dx = f'(g(x)) × g'(x). This rule enables us to differentiate complex nested functions by working from the outside in, applying the derivative of each "layer" of the composition.</p>
+                        </div>
+                        
+                        <div class="content-images">
+                            <div class="content-image-grid">
+                                <div class="content-image">
+                                    <div class="image-placeholder">Power Rule Examples</div>
+                                    <p class="image-caption">Figure 6: Applications of the power rule</p>
+                                </div>
+                                <div class="content-image">
+                                    <div class="image-placeholder">Product Rule</div>
+                                    <p class="image-caption">Figure 7: Product rule visualization</p>
+                                </div>
+                                <div class="content-image">
+                                    <div class="image-placeholder">Chain Rule</div>
+                                    <p class="image-caption">Figure 8: Chain rule for composite functions</p>
+                                </div>
+                                <div class="content-image">
+                                    <div class="image-placeholder">Common Derivatives</div>
+                                    <p class="image-caption">Figure 9: Table of common derivative formulas</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Applications Section -->
+                    <section class="topic-content-section">
+                        <h2>🔬 Applications of Derivatives</h2>
+                        <div class="content-block">
+                            <p>Derivatives have countless applications across mathematics, science, and real-world problem solving. In physics, derivatives represent velocity (rate of change of position) and acceleration (rate of change of velocity). In economics, marginal cost and marginal revenue are derivatives that help businesses optimize their operations. In biology, derivatives can model population growth rates and the spread of diseases.</p>
+                            
+                            <p>One of the most important applications is in optimization problems, where we use derivatives to find maximum and minimum values of functions. By setting the derivative equal to zero and solving for critical points, we can locate potential extrema. The second derivative test then helps us determine whether these critical points represent maxima, minima, or points of inflection.</p>
+                            
+                            <p>Derivatives also play a crucial role in curve sketching and understanding function behavior. The first derivative tells us where a function is increasing or decreasing, while the second derivative reveals concavity and points of inflection. This information allows us to create accurate graphs of functions and understand their qualitative behavior.</p>
+                            
+                            <p>In more advanced applications, derivatives form the foundation for differential equations, which model everything from radioactive decay to population dynamics to the motion of celestial bodies. Neural networks and machine learning algorithms also rely heavily on derivatives for optimization through techniques like gradient descent.</p>
+                        </div>
+                        
+                        <div class="content-images">
+                            <div class="content-image-grid">
+                                <div class="content-image">
+                                    <div class="image-placeholder">Optimization Problems</div>
+                                    <p class="image-caption">Figure 10: Finding maximum and minimum values</p>
+                                </div>
+                                <div class="content-image">
+                                    <div class="image-placeholder">Curve Analysis</div>
+                                    <p class="image-caption">Figure 11: Using derivatives for curve sketching</p>
+                                </div>
+                                <div class="content-image">
+                                    <div class="image-placeholder">Physics Applications</div>
+                                    <p class="image-caption">Figure 12: Velocity and acceleration from position</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Quiz Section -->
+                    <section class="topic-quiz-section">
+                        <h2>🧪 Practice Quiz</h2>
+                        <div class="quiz-container">
+                            <div class="quiz-intro">
+                                <p>Test your understanding of derivatives with this practice quiz. Choose the best answer for each question.</p>
+                            </div>
+                            
+                            <div class="quiz-questions">
+                                <div class="quiz-question" data-question="1">
+                                    <h4>Question 1: What is the derivative of f(x) = x³?</h4>
+                                    <div class="quiz-options">
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q1" value="a">
+                                            <span>A) x²</span>
+                                        </label>
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q1" value="b">
+                                            <span>B) 3x²</span>
+                                        </label>
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q1" value="c">
+                                            <span>C) 3x</span>
+                                        </label>
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q1" value="d">
+                                            <span>D) x⁴/4</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="quiz-question" data-question="2">
+                                    <h4>Question 2: The derivative represents:</h4>
+                                    <div class="quiz-options">
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q2" value="a">
+                                            <span>A) The area under a curve</span>
+                                        </label>
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q2" value="b">
+                                            <span>B) The instantaneous rate of change</span>
+                                        </label>
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q2" value="c">
+                                            <span>C) The average value of a function</span>
+                                        </label>
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q2" value="d">
+                                            <span>D) The maximum value of a function</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="quiz-question" data-question="3">
+                                    <h4>Question 3: To find critical points, we set:</h4>
+                                    <div class="quiz-options">
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q3" value="a">
+                                            <span>A) f(x) = 0</span>
+                                        </label>
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q3" value="b">
+                                            <span>B) f'(x) = 0</span>
+                                        </label>
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q3" value="c">
+                                            <span>C) f''(x) = 0</span>
+                                        </label>
+                                        <label class="quiz-option">
+                                            <input type="radio" name="q3" value="d">
+                                            <span>D) f(x) = 1</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="quiz-actions">
+                                <button class="btn btn-primary" id="submit-quiz">Submit Quiz</button>
+                                <button class="btn btn-secondary" id="reset-quiz">Reset</button>
+                            </div>
+                            
+                            <div class="quiz-results hidden" id="quiz-results">
+                                <h4>Quiz Results</h4>
+                                <p id="quiz-score"></p>
+                                <div id="quiz-feedback"></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Navigation -->
+                    <section class="topic-navigation">
+                        <div class="nav-buttons">
+                            <a href="../../maths.html" class="btn btn-secondary">← Back to Mathematics</a>
+                            <a href="integrals.html" class="btn btn-primary">Next: Integrals →</a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../../js/main.js"></script>
+    <script src="../../../js/quiz.js"></script>
+</body>
+</html> 

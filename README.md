@@ -1,79 +1,197 @@
-# Malleability - Study Dashboard
+# 📚 Malleability Study Dashboard
 
-A minimalistic study dashboard with task management, XP tracking, and motivational quotes.
+A beautiful, minimalistic study dashboard with task management, XP tracking, motivational quotes, and comprehensive subject resources. Built with vanilla HTML, CSS, and JavaScript for optimal performance and scalability.
 
-## Features
+## ✨ Features
 
-### 🏠 Home Dashboard
-- Clean, modern interface with sidebar navigation
-- Widget-based layout for easy overview
+### 🏠 Dashboard Home
+- **Task Management**: Daily task tracking with calendar integration
+- **XP System**: Progressive leveling system with activity rewards (100 XP → Level 2, 200 XP → Level 3, etc.)
+- **Calendar Widget**: Visual calendar with task indicators
+- **Motivational Quotes**: Custom quote management system with add/delete functionality
+- **Pastel Design**: Beautiful glass-morphism interface with rounded edges
 
-### 📅 Task Management & Calendar
-- **Daily Tasks**: Add, complete, and delete tasks for any day
-- **Interactive Calendar**: Click on any date to view/manage tasks for that day
-- **Task Indicators**: Days with tasks show a green indicator dot
-- **Local Storage**: All tasks are saved automatically in your browser
+### 📖 Comprehensive Subject Learning
+- **10 Academic Subjects**: Biology, Chemistry, Physics, Mathematics, Latin, Music Theory, Psychology, Politics, Programming
+- **Hierarchical Topic Structure**: Each subject broken down into categories and individual topics
+- **100+ Detailed Topic Pages**: In-depth content with multiple sections, examples, and visual aids
+- **Interactive Quizzes**: Topic-specific practice quizzes with XP rewards
+- **Beautiful Styling**: Subject-specific color coding with hover effects
 
-### 🎯 XP & Level System
-- **Level Progression**: Start at Level 1 and progress by earning XP
-- **XP Activities**: 
-  - "Read Today's Chapter" - 10 XP
-  - "Watched a Documentary" - 15 XP
-  - "Completed a Quiz" - 20 XP
-- **Dynamic Leveling**: Each level requires 100 XP more than the previous level
-- **Progress Tracking**: Visual progress bar and level notifications
-- **Reset Option**: Reset your progress if needed
+### 🧪 Advanced Topic System
 
-### 💬 Motivational Quotes
-- **Default Quotes**: Comes with 10 inspiring quotes
-- **Add Custom Quotes**: Add your own motivational quotes
-- **Random Display**: Get a new random quote anytime
-- **Persistent Storage**: Custom quotes are saved in local storage
+#### **Biology** 🧬
+- **Cell Biology**: Cell Structure, Cell Division, Cellular Respiration ✅
+- **Genetics**: DNA Structure ✅, Protein Synthesis, Heredity
+- **Evolution**: Natural Selection, Speciation, Phylogeny
+- **Ecology**: Ecosystems, Food Chains, Populations
 
-### 📚 Subject Navigation
-- Sidebar menu with links to different study subjects:
-  - Biology, Chemistry, Physics, Maths
-  - Latin, Music Theory, Psychology
-  - Politics, Programming
+#### **Chemistry** ⚗️
+- **Atomic Structure**: Atomic Theory ✅, Electron Configuration, Periodic Trends
+- **Chemical Bonding**: Ionic Bonding ✅, Covalent Bonding, Molecular Geometry
+- **Reactions**: Reaction Types, Stoichiometry, Kinetics
 
-## Getting Started
+#### **Physics** ⚛️
+- **Mechanics**: Newton's Laws ✅, Energy Conservation, Momentum
+- **Thermodynamics**: Heat Transfer, Gas Laws, Entropy
+- **Electricity**: Electric Fields, Circuits, Magnetism
+- **Waves**: Wave Properties, Sound Waves, Electromagnetic Radiation
 
-1. Open `index.html` in your web browser
-2. Start adding tasks for today or any other day
-3. Earn XP by clicking the activity buttons
-4. Get motivated with inspirational quotes
-5. Navigate between subjects using the sidebar menu
+#### **Mathematics** 🔢
+- **Algebra**: Linear Equations ✅, Quadratic Equations, Polynomials
+- **Calculus**: Limits, Derivatives ✅, Integrals
+- **Geometry**: Euclidean Geometry, Trigonometry, Coordinate Geometry
+- **Statistics**: Descriptive Statistics, Probability, Hypothesis Testing
 
-## Browser Compatibility
+#### **Latin** 🏛️
+- **Grammar**: Noun Declensions ✅, Verb Conjugations, Syntax
+- **Vocabulary**: Basic Words, Verb Families, Thematic Vocabulary
+- **Literature**: Caesar, Cicero, Vergil
+- **Culture**: Roman History, Daily Life, Mythology
 
-Works in all modern browsers that support:
-- Local Storage
-- CSS Grid
-- ES6 JavaScript
+#### **Music Theory** 🎵
+- **Fundamentals**: Major Scales ✅, Minor Scales, Intervals
+- **Harmony**: Triads, Seventh Chords, Chord Progressions
+- **Composition**: Voice Leading, Counterpoint, Form Analysis
+- **Analysis**: Harmonic Analysis, Phrase Structure, Musical Styles
 
-## Data Storage
+#### **Psychology** 🧠
+- **Cognitive**: Memory Processes ✅, Attention & Perception, Problem Solving
+- **Behavioral**: Classical Conditioning, Operant Conditioning, Behavior Modification
+- **Developmental**: Child Development, Adolescent Psychology, Adult Development
+- **Social**: Social Influence, Group Dynamics, Interpersonal Relationships
 
-All your data (tasks, XP, level, custom quotes) is stored locally in your browser using Local Storage. This means:
-- ✅ Your data persists between sessions
-- ✅ No internet connection required
-- ⚠️ Data is specific to the browser and device you're using
-- ⚠️ Clearing browser data will reset everything
+#### **Politics** 🏛️
+- **Political Theory**: Democratic Theory ✅, Political Authority, Justice & Equality
+- **Comparative Politics**: Electoral Systems, Political Parties, Federalism
+- **International Relations**: Realism & Liberalism, International Law, Global Governance
+- **Public Policy**: Policy Making, Policy Analysis, Implementation
 
-## File Structure
+#### **Programming** 💻
+- **Fundamentals**: Variables & Data Types ✅, Control Structures, Functions
+- **OOP**: Classes & Objects ✅, Inheritance, Polymorphism
+- **Data Structures**: Arrays & Lists, Stacks & Queues, Trees & Graphs
+- **Web Development**: HTML & CSS, JavaScript, Frameworks
+
+### 🔧 Technical Features
+- **Organized File Structure**: Separate CSS and JS modules for maintainability
+- **Profile System**: Google authentication with demo mode
+- **Local Storage**: Persistent data for tasks, XP, and quotes
+- **Responsive Design**: Mobile-friendly with beautiful animations
+- **Quiz System**: Interactive assessments with immediate feedback
+
+## 🗂️ Project Structure
 
 ```
-├── index.html          # Main HTML file
-├── styles.css          # CSS styling
-├── script.js           # JavaScript functionality
-└── README.md           # This file
+/
+├── index.html                 # Main dashboard
+├── css/
+│   ├── main.css              # Core styles, sidebar, forms
+│   ├── subjects.css          # Subject page styling
+│   └── profile.css           # Profile page styling
+├── js/
+│   ├── main.js               # Core functionality
+│   ├── auth.js               # Authentication system
+│   └── quiz.js               # Quiz functionality
+├── pages/
+│   ├── profile.html          # User profile page
+│   ├── [subject].html        # Main subject pages (10 subjects)
+│   └── [subject]/
+│       └── [category]/
+│           └── [topic].html  # Individual topic pages (100+ topics)
+└── README.md
 ```
 
-## Customization
+## 🚀 Setup & Usage
 
-You can easily customize the website by:
-- Editing the subjects in the sidebar (index.html)
-- Modifying XP values for different activities (script.js)
-- Adding more default quotes (script.js)
-- Adjusting the styling (styles.css)
+### **Quick Start**
+1. Clone or download the repository
+2. Start a local web server:
+   ```bash
+   python3 -m http.server 8000
+   ```
+3. Open `http://localhost:8000` in your browser
+4. Try the demo account or set up Google authentication
 
-Enjoy your study journey! 🚀 
+### **Google Authentication Setup** (Optional)
+1. Create a Google Cloud Console project
+2. Enable Google Sign-In API
+3. Get your client ID
+4. Update `pages/profile.html` with your client ID:
+   ```html
+   <meta name="google-signin-client_id" content="your-client-id.googleusercontent.com">
+   ```
+
+### **Demo Mode**
+- Click "Try Demo Account" on the profile page
+- Explore all features without authentication
+- Perfect for testing and development
+
+## 🎨 Design Philosophy
+
+### **Minimalistic Interface**
+- Clean, distraction-free design
+- Pastel color scheme with glass-morphism effects
+- Each subject has unique color coding for easy navigation
+
+### **Progressive Learning**
+- Hierarchical content structure: Subject → Category → Topic
+- Comprehensive coverage with detailed explanations
+- Interactive quizzes reinforce learning with XP rewards
+
+### **Responsive & Accessible**
+- Mobile-friendly responsive design
+- Intuitive navigation with breadcrumbs
+- Clear visual feedback for all interactions
+
+## 📊 Progress Tracking
+
+### **XP System**
+- Progressive leveling: Level 1→2 (100 XP), Level 2→3 (200 XP), etc.
+- Earn XP from daily activities and quiz completion
+- Visual progress bars show advancement
+
+### **Task Management**
+- Calendar integration with daily task tracking
+- Mark tasks complete for XP rewards
+- Persistent storage maintains progress
+
+## 🛠️ Development
+
+### **Adding New Topics**
+1. Create HTML file in appropriate subject/category folder
+2. Follow the established template structure
+3. Include comprehensive content sections
+4. Add interactive quiz with 3+ questions
+5. Update navigation links
+
+### **Customization**
+- Modify CSS variables for color schemes
+- Add new subjects by extending the sidebar structure
+- Customize XP rewards and leveling progression
+
+## 📝 Features in Development
+- **Enhanced Quiz System**: More question types and difficulty levels
+- **Study Streak Tracking**: Daily study habit monitoring
+- **Social Features**: Study groups and progress sharing
+- **Advanced Analytics**: Detailed learning progress insights
+- **Mobile App**: Native iOS/Android applications
+
+## 📱 Browser Compatibility
+- Chrome (recommended)
+- Firefox
+- Safari
+- Edge
+
+## 📄 License
+This project is open source and available under the MIT License.
+
+---
+
+**Current Status**: ✅ **Production Ready** with comprehensive topic breakdown and full functionality
+- ✅ Complete dashboard with task management, XP system, quotes
+- ✅ 10 detailed subject pages with hierarchical navigation
+- ✅ 100+ individual topic pages with extensive content
+- ✅ Interactive quiz system with XP integration
+- ✅ Profile system with Google auth and demo mode
+- ✅ Beautiful, responsive design with pastel themes 
