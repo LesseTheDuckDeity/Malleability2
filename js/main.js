@@ -1,15 +1,241 @@
-// Main JavaScript file with shared utilities
+// Main JavaScript file with shared utilities and API integration
 class MalleabilityApp {
     constructor() {
         this.currentUser = null;
+        this.apiBaseUrl = '';  // Since we're serving from same origin
+        this.state = new StateManager(); // Initialize state manager
         this.initializeApp();
     }
 
-    initializeApp() {
+    async initializeApp() {
         this.loadUserSession();
         this.initializeNavigation();
         this.initializeSharedComponents();
         this.initializeLearningTopics();
+        await this.loadInitialData();
+    }
+
+    // API Integration
+    async loadInitialData() {
+        try {
+            // Load user data from API
+            await this.loadUserFromAPI();
+            
+            // Load subjects data if on relevant pages
+            if (window.location.pathname.includes('index.html') || window.location.pathname === '/') {
+                await this.state.loadSubjects();
+                // Note: quotes and tasks are loaded by DashboardManager to avoid timing conflicts
+            }
+        } catch (error) {
+            console.error('Error loading initial data:', error);
+        }
+    }
+
+    async loadUserFromAPI() {
+        try {
+            const response = await fetch(`${this.apiBaseUrl}/api/user`);
+            if (response.ok) {
+                const data = await response.json();
+                if (data.user) {
+                    this.currentUser = data.user;
+                    this.state.setState('user', data.user);
+                    this.updateUIForLoggedInUser();
+                }
+            }
+        } catch (error) {
+            console.error('Error loading user from API:', error);
+        }
+    }
+
+    async loadSubjects() {
+        try {
+            const response = await fetch(`${this.apiBaseUrl}/api/subjects`);
+            if (response.ok) {
+                const data = await response.json();
+                return data.subjects || [];
+            }
+        } catch (error) {
+            console.error('Error loading subjects:', error);
+            return [];
+        }
+    }
+
+    async loadTopics(subjectId) {
+        try {
+            console.log('📋 Loading topics for subject ID:', subjectId);
+            const response = await fetch(`${this.apiBaseUrl}/api/subjects/${subjectId}/topics`);
+            if (response.ok) {
+                const data = await response.json();
+                console.log('📋 Topics loaded successfully:', data.topics?.length || 0, 'topics');
+                return data.topics || [];
+            } else {
+                console.log('❌ Failed to load topics. Status:', response.status);
+                return [];
+            }
+        } catch (error) {
+            console.error('💥 Error loading topics:', error);
+            return [];
+        }
+    }
+
+    async loadTasks() {
+        try {
+            const response = await fetch(`${this.apiBaseUrl}/api/tasks`);
+            if (response.ok) {
+                const data = await response.json();
+                return data.tasks || [];
+            }
+        } catch (error) {
+            console.error('Error loading tasks:', error);
+            return [];
+        }
+    }
+
+    async createTask(taskData) {
+        try {
+            const response = await fetch(`${this.apiBaseUrl}/api/tasks`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(taskData)
+            });
+            if (response.ok) {
+                const result = await response.json();
+                this.showMessage('Task created successfully!', 'success');
+                return result;
+            } else {
+                throw new Error('Failed to create task');
+            }
+        } catch (error) {
+            console.error('Error creating task:', error);
+            this.showMessage('Error creating task', 'error');
+            throw error;
+        }
+    }
+
+    async updateTask(taskId, taskData) {
+        try {
+            const response = await fetch(`${this.apiBaseUrl}/api/tasks/${taskId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(taskData)
+            });
+            if (response.ok) {
+                this.showMessage('Task updated successfully!', 'success');
+                return await response.json();
+            } else {
+                throw new Error('Failed to update task');
+            }
+        } catch (error) {
+            console.error('Error updating task:', error);
+            this.showMessage('Error updating task', 'error');
+            throw error;
+        }
+    }
+
+    async deleteTask(taskId) {
+        try {
+            const response = await fetch(`${this.apiBaseUrl}/api/tasks/${taskId}`, {
+                method: 'DELETE'
+            });
+            if (response.ok) {
+                this.showMessage('Task deleted successfully!', 'success');
+                return await response.json();
+            } else {
+                throw new Error('Failed to delete task');
+            }
+        } catch (error) {
+            console.error('Error deleting task:', error);
+            this.showMessage('Error deleting task', 'error');
+            throw error;
+        }
+    }
+
+    async loadQuotes() {
+        try {
+            const response = await fetch(`${this.apiBaseUrl}/api/quotes`);
+            if (response.ok) {
+                const data = await response.json();
+                return data.quotes || [];
+            }
+        } catch (error) {
+            console.error('Error loading quotes:', error);
+            return [];
+        }
+    }
+
+    async createQuote(quoteData) {
+        try {
+            const response = await fetch(`${this.apiBaseUrl}/api/quotes`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(quoteData)
+            });
+            if (response.ok) {
+                this.showMessage('Quote added successfully!', 'success');
+                return await response.json();
+            } else {
+                throw new Error('Failed to add quote');
+            }
+        } catch (error) {
+            console.error('Error adding quote:', error);
+            this.showMessage('Error adding quote', 'error');
+            throw error;
+        }
+    }
+
+    async deleteQuote(quoteId) {
+        try {
+            const response = await fetch(`${this.apiBaseUrl}/api/quotes/${quoteId}`, {
+                method: 'DELETE'
+            });
+            if (response.ok) {
+                this.showMessage('Quote deleted successfully!', 'success');
+                return await response.json();
+            } else {
+                throw new Error('Failed to delete quote');
+            }
+        } catch (error) {
+            console.error('Error deleting quote:', error);
+            this.showMessage('Error deleting quote', 'error');
+            throw error;
+        }
+    }
+
+    async updateUserProgress(xpGained) {
+        try {
+            const response = await fetch(`${this.apiBaseUrl}/api/user/progress`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ xp_gained: xpGained })
+            });
+            if (response.ok) {
+                const result = await response.json();
+                this.currentUser.xp = result.xp;
+                this.currentUser.level = result.level;
+                this.state.setState('user', this.currentUser);
+                this.updateUIForLoggedInUser();
+                
+                if (result.xp_gained > 0) {
+                    this.showMessage(`You gained ${result.xp_gained} XP!`, 'success');
+                }
+                
+                return result;
+            } else {
+                throw new Error('Failed to update progress');
+            }
+        } catch (error) {
+            console.error('Error updating progress:', error);
+            this.showMessage('Error updating progress', 'error');
+            throw error;
+        }
     }
 
     // User Session Management
@@ -18,6 +244,7 @@ class MalleabilityApp {
         if (userData) {
             try {
                 this.currentUser = JSON.parse(userData);
+                this.state.setState('user', this.currentUser);
                 this.updateUIForLoggedInUser();
             } catch (error) {
                 console.error('Error loading user session:', error);
@@ -28,12 +255,14 @@ class MalleabilityApp {
 
     setUser(user) {
         this.currentUser = user;
+        this.state.setState('user', user);
         localStorage.setItem('malleability_user', JSON.stringify(user));
         this.updateUIForLoggedInUser();
     }
 
     logout() {
         this.currentUser = null;
+        this.state.setState('user', null);
         localStorage.removeItem('malleability_user');
         localStorage.removeItem('malleability_profile');
         this.updateUIForLoggedOutUser();
@@ -50,6 +279,17 @@ class MalleabilityApp {
         userElements.forEach(el => {
             el.textContent = this.currentUser.name || this.currentUser.email;
         });
+
+        // Update XP and level displays
+        const xpElements = document.querySelectorAll('.user-xp');
+        xpElements.forEach(el => {
+            el.textContent = this.currentUser.xp || 0;
+        });
+
+        const levelElements = document.querySelectorAll('.user-level');
+        levelElements.forEach(el => {
+            el.textContent = this.currentUser.level || 1;
+        });
     }
 
     updateUIForLoggedOutUser() {
@@ -60,8 +300,70 @@ class MalleabilityApp {
         });
     }
 
-    // Navigation
+    // Navigation - Updated to load subjects dynamically
     initializeNavigation() {
+        // Set active menu item based on current page
+        this.setActiveMenuItemFromURL();
+        this.loadDynamicMenu();
+    }
+
+    async loadDynamicMenu() {
+        try {
+            // Load subjects from API
+            const subjects = await this.loadSubjects();
+            this.generateDynamicMenu(subjects);
+        } catch (error) {
+            console.error('Error loading dynamic menu:', error);
+        }
+    }
+
+    generateDynamicMenu(subjects) {
+        const sidebarMenu = document.querySelector('.sidebar-menu');
+        if (!sidebarMenu) return;
+
+        // Clear existing menu items except Home and Profile
+        sidebarMenu.innerHTML = '';
+
+        // Add Home
+        sidebarMenu.innerHTML += `
+            <li><a href="/" class="menu-item" data-page="home">🏠 Home</a></li>
+        `;
+
+        // Add subjects from database using IDs
+        subjects.forEach(subject => {
+            const emoji = this.getSubjectEmoji(subject.name);
+            
+            sidebarMenu.innerHTML += `
+                <li><a href="/subject/${subject.id}" class="menu-item" data-page="subject-${subject.id}">${emoji} ${subject.name}</a></li>
+            `;
+        });
+
+        // Add Profile
+        sidebarMenu.innerHTML += `
+            <li><a href="/pages/profile.html" class="menu-item" data-page="profile">👤 Profile</a></li>
+        `;
+
+        // Re-initialize menu item click handlers
+        this.initializeMenuItemHandlers();
+        this.setActiveMenuItemFromURL();
+    }
+
+    getSubjectEmoji(subjectName) {
+        const emojiMap = {
+            'Biology': '🧬',
+            'Chemistry': '⚗️',
+            'Physics': '⚛️',
+            'Mathematics': '🔢',
+            'Latin': '🏛️',
+            'Music Theory': '🎵',
+            'Psychology': '🧠',
+            'Politics': '🏛️',
+            'Programming': '💻'
+        };
+        return emojiMap[subjectName] || '📚';
+    }
+
+    initializeMenuItemHandlers() {
         const menuItems = document.querySelectorAll('.menu-item');
         menuItems.forEach(item => {
             item.addEventListener('click', (e) => {
@@ -73,9 +375,6 @@ class MalleabilityApp {
                 }
             });
         });
-
-        // Set active menu item based on current page
-        this.setActiveMenuItemFromURL();
     }
 
     setActiveMenuItem(activeItem) {
@@ -97,9 +396,11 @@ class MalleabilityApp {
             
             // Check if this menu item corresponds to current page
             const href = item.getAttribute('href');
-            if (href && (currentPath.endsWith(href) || 
-                (currentPath.endsWith('/') && href === 'index.html') ||
-                (currentPath.endsWith('index.html') && href === 'index.html'))) {
+            if (href && (
+                currentPath === href || 
+                (currentPath === '/' && href === '/') ||
+                (currentPath.startsWith('/subject/') && href.startsWith('/subject/') && currentPath === href)
+            )) {
                 item.classList.add('active');
             }
         });
@@ -150,6 +451,16 @@ class MalleabilityApp {
 
         const messageEl = document.createElement('div');
         messageEl.className = `message ${type}`;
+        messageEl.style.cssText = `
+            background: ${type === 'success' ? '#d4edda' : type === 'error' ? '#f8d7da' : '#d1ecf1'};
+            color: ${type === 'success' ? '#155724' : type === 'error' ? '#721c24' : '#0c5460'};
+            border: 1px solid ${type === 'success' ? '#c3e6cb' : type === 'error' ? '#f5c6cb' : '#bee5eb'};
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        `;
+        
         messageEl.innerHTML = `
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span>${message}</span>
@@ -222,9 +533,8 @@ class MalleabilityApp {
         const step = (timestamp) => {
             if (!startTimestamp) startTimestamp = timestamp;
             const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            const current = Math.floor(progress * (end - start) + start);
-            obj.innerHTML = current;
-            if (callback) callback(current, progress);
+            const value = start + (end - start) * progress;
+            if (callback) callback(value);
             if (progress < 1) {
                 window.requestAnimationFrame(step);
             }
@@ -233,44 +543,42 @@ class MalleabilityApp {
     }
 
     static fadeIn(element, duration = 300) {
-        element.style.opacity = '0';
+        element.style.opacity = 0;
         element.style.display = 'block';
-        
-        let start = null;
+        let startTimestamp = null;
         const animate = (timestamp) => {
-            if (!start) start = timestamp;
-            const progress = (timestamp - start) / duration;
-            
-            element.style.opacity = Math.min(progress, 1);
-            
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            element.style.opacity = progress;
             if (progress < 1) {
-                requestAnimationFrame(animate);
+                window.requestAnimationFrame(animate);
             }
         };
-        requestAnimationFrame(animate);
+        window.requestAnimationFrame(animate);
     }
 
     static fadeOut(element, duration = 300) {
-        let start = null;
+        let startTimestamp = null;
         const animate = (timestamp) => {
-            if (!start) start = timestamp;
-            const progress = (timestamp - start) / duration;
-            
-            element.style.opacity = Math.max(1 - progress, 0);
-            
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            } else {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            element.style.opacity = 1 - progress;
+            if (progress >= 1) {
                 element.style.display = 'none';
+            } else {
+                window.requestAnimationFrame(animate);
             }
         };
-        requestAnimationFrame(animate);
+        window.requestAnimationFrame(animate);
     }
 }
 
-// Initialize the app
-const app = new MalleabilityApp();
+// Initialize the app when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    window.app = new MalleabilityApp();
+});
 
 // Export for use in other modules
-window.MalleabilityApp = MalleabilityApp;
-window.app = app; 
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = MalleabilityApp;
+} 

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test - Malleability</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 20px;
+            background: #f7fafc;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            transform: translateY(-1px);
+        }
+        .result {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>API Integration Test</h1>
+        
+        <!-- Quotes Section -->
+        <div class="section">
+            <h2>Quotes API</h2>
+            <button onclick="loadQuotes()">Load Quotes</button>
+            <button onclick="showAddQuoteForm()">Add Quote</button>
+            
+            <div id="add-quote-form" style="display: none; margin-top: 15px;">
+                <input type="text" id="quote-text" placeholder="Enter quote text...">
+                <input type="text" id="quote-author" placeholder="Enter author...">
+                <button onclick="addQuote()">Save Quote</button>
+                <button onclick="hideAddQuoteForm()">Cancel</button>
+            </div>
+            
+            <div id="quotes-result" class="result"></div>
+        </div>
+        
+        <!-- Tasks Section -->
+        <div class="section">
+            <h2>Tasks API</h2>
+            <button onclick="loadTasks()">Load Tasks</button>
+            <button onclick="showAddTaskForm()">Add Task</button>
+            
+            <div id="add-task-form" style="display: none; margin-top: 15px;">
+                <input type="text" id="task-title" placeholder="Enter task title...">
+                <textarea id="task-desc" placeholder="Enter description..."></textarea>
+                <input type="date" id="task-date">
+                <select id="task-priority">
+                    <option value="Low">Low</option>
+                    <option value="Medium" selected>Medium</option>
+                    <option value="High">High</option>
+                </select>
+                <button onclick="addTask()">Save Task</button>
+                <button onclick="hideAddTaskForm()">Cancel</button>
+            </div>
+            
+            <div id="tasks-result" class="result"></div>
+        </div>
+        
+        <!-- User Section -->
+        <div class="section">
+            <h2>User API</h2>
+            <button onclick="loadUser()">Load User</button>
+            <button onclick="addXP()">Add 10 XP</button>
+            
+            <div id="user-result" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        // Base API URL
+        const API_BASE = '';
+
+        // Helper function to display results
+        function displayResult(elementId, data) {
+            const element = document.getElementById(elementId);
+            element.textContent = JSON.stringify(data, null, 2);
+        }
+
+        // Quotes Functions
+        async function loadQuotes() {
+            try {
+                const response = await fetch(`${API_BASE}/api/quotes`);
+                const data = await response.json();
+                displayResult('quotes-result', data);
+            } catch (error) {
+                displayResult('quotes-result', { error: error.message });
+            }
+        }
+
+        function showAddQuoteForm() {
+            document.getElementById('add-quote-form').style.display = 'block';
+        }
+
+        function hideAddQuoteForm() {
+            document.getElementById('add-quote-form').style.display = 'none';
+            document.getElementById('quote-text').value = '';
+            document.getElementById('quote-author').value = '';
+        }
+
+        async function addQuote() {
+            const text = document.getElementById('quote-text').value.trim();
+            const author = document.getElementById('quote-author').value.trim();
+            
+            if (!text || !author) {
+                alert('Please fill in both fields');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/quotes`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        text: text,
+                        author: author,
+                        category: 'custom'
+                    })
+                });
+                
+                const data = await response.json();
+                displayResult('quotes-result', data);
+                hideAddQuoteForm();
+                
+                // Reload quotes to show the new one
+                setTimeout(loadQuotes, 500);
+            } catch (error) {
+                displayResult('quotes-result', { error: error.message });
+            }
+        }
+
+        // Tasks Functions
+        async function loadTasks() {
+            try {
+                const response = await fetch(`${API_BASE}/api/tasks`);
+                const data = await response.json();
+                displayResult('tasks-result', data);
+            } catch (error) {
+                displayResult('tasks-result', { error: error.message });
+            }
+        }
+
+        function showAddTaskForm() {
+            document.getElementById('add-task-form').style.display = 'block';
+            // Set default date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('task-date').value = today;
+        }
+
+        function hideAddTaskForm() {
+            document.getElementById('add-task-form').style.display = 'none';
+            document.getElementById('task-title').value = '';
+            document.getElementById('task-desc').value = '';
+            document.getElementById('task-date').value = '';
+            document.getElementById('task-priority').value = 'Medium';
+        }
+
+        async function addTask() {
+            const title = document.getElementById('task-title').value.trim();
+            const description = document.getElementById('task-desc').value.trim();
+            const date = document.getElementById('task-date').value;
+            const priority = document.getElementById('task-priority').value;
+            
+            if (!title) {
+                alert('Please enter a task title');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/tasks`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        title: title,
+                        description: description,
+                        due_date: date,
+                        priority: priority,
+                        completed: false
+                    })
+                });
+                
+                const data = await response.json();
+                displayResult('tasks-result', data);
+                hideAddTaskForm();
+                
+                // Reload tasks to show the new one
+                setTimeout(loadTasks, 500);
+            } catch (error) {
+                displayResult('tasks-result', { error: error.message });
+            }
+        }
+
+        // User Functions
+        async function loadUser() {
+            try {
+                const response = await fetch(`${API_BASE}/api/user`);
+                const data = await response.json();
+                displayResult('user-result', data);
+            } catch (error) {
+                displayResult('user-result', { error: error.message });
+            }
+        }
+
+        async function addXP() {
+            try {
+                const response = await fetch(`${API_BASE}/api/user/progress`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        xp_gained: 10
+                    })
+                });
+                
+                const data = await response.json();
+                displayResult('user-result', data);
+                
+                // Also reload user to show updated stats
+                setTimeout(loadUser, 500);
+            } catch (error) {
+                displayResult('user-result', { error: error.message });
+            }
+        }
+
+        // Load initial data
+        window.addEventListener('load', () => {
+            loadQuotes();
+            loadTasks();
+            loadUser();
+        });
+    </script>
+</body>
+</html> 

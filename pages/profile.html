@@ -18,17 +18,9 @@
                 <h2>Malleability</h2>
             </div>
             <ul class="sidebar-menu">
-                <li><a href="../index.html" class="menu-item" data-page="home">Home</a></li>
-                <li><a href="biology.html" class="menu-item" data-page="biology">Biology</a></li>
-                <li><a href="chemistry.html" class="menu-item" data-page="chemistry">Chemistry</a></li>
-                <li><a href="physics.html" class="menu-item" data-page="physics">Physics</a></li>
-                <li><a href="maths.html" class="menu-item" data-page="maths">Maths</a></li>
-                <li><a href="latin.html" class="menu-item" data-page="latin">Latin</a></li>
-                <li><a href="music-theory.html" class="menu-item" data-page="music-theory">Music Theory</a></li>
-                <li><a href="psychology.html" class="menu-item" data-page="psychology">Psychology</a></li>
-                <li><a href="politics.html" class="menu-item" data-page="politics">Politics</a></li>
-                <li><a href="programming.html" class="menu-item" data-page="programming">Programming</a></li>
-                <li><a href="profile.html" class="menu-item active" data-page="profile">Profile</a></li>
+                <!-- Menu items will be loaded dynamically from database -->
+                <li><a href="/" class="menu-item" data-page="home">🏠 Home</a></li>
+                <li class="loading-menu">Loading subjects...</li>
             </ul>
         </nav>
 
@@ -281,6 +273,7 @@
         </main>
     </div>
 
+    <script src="../js/state-manager.js"></script>
     <script src="../js/main.js"></script>
     <script src="../js/auth.js"></script>
     <script src="../js/profile.js"></script>

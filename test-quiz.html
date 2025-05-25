@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Component Test</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div style="padding: 20px; max-width: 800px; margin: 0 auto;">
+        <h1>Quiz Component Test</h1>
+        
+        <h2>Subject-Level Quiz (Biology)</h2>
+        <button onclick="testSubjectQuiz()">Load Biology Subject Quiz</button>
+        <div id="subject-quiz-container"></div>
+        
+        <hr style="margin: 40px 0;">
+        
+        <h2>Topic-Level Quiz (Cell Structure)</h2>
+        <button onclick="testTopicQuiz()">Load Cell Structure Topic Quiz</button>
+        <div id="topic-quiz-container"></div>
+    </div>
+
+    <script src="js/quiz-component.js"></script>
+    <script>
+        function testSubjectQuiz() {
+            const quiz = new QuizComponent('subject-quiz-container', {
+                showResults: true,
+                allowNavigation: true
+            });
+            quiz.loadSubjectQuizzes(1); // Biology subject ID
+        }
+        
+        function testTopicQuiz() {
+            const quiz = new QuizComponent('topic-quiz-container', {
+                showResults: true,
+                allowNavigation: true
+            });
+            quiz.loadTopicQuizzes(19); // Cell Structure topic ID
+        }
+    </script>
+</body>
+</html> 

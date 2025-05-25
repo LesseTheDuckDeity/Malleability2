@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subject - Malleability Study Dashboard</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/subjects.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Menu -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>Malleability</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <!-- Menu items will be loaded dynamically from database -->
+                <li><a href="/" class="menu-item" data-page="home">🏠 Home</a></li>
+                <li class="loading-menu">Loading subjects...</li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="subject-page">
+                <div class="subject-header">
+                    <h1 id="subject-title">Loading...</h1>
+                    <p id="subject-description" class="subject-description">Loading subject information...</p>
+                </div>
+                
+                <div class="subject-content">
+                    <!-- Topics Section -->
+                    <section class="subject-section">
+                        <h2>📚 Topics</h2>
+                        <div id="topics-container" class="topics-grid">
+                            <div class="loading-topics">Loading topics...</div>
+                        </div>
+                    </section>
+                    
+                    <!-- Resources Section -->
+                    <section class="subject-section">
+                        <h2>📖 Recommended Resources</h2>
+                        <ul id="resources-list" class="resource-list">
+                            <li>Loading resources...</li>
+                        </ul>
+                    </section>
+                    
+                    <!-- Practice Exams Section -->
+                    <section class="subject-section">
+                        <h2>🧪 Practice Exams</h2>
+                        <div id="quizzes-container" class="quiz-grid">
+                            <div class="loading-quizzes">Loading practice exams...</div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/state-manager.js"></script>
+    <script src="../js/components.js"></script>
+    <script src="../js/quiz-component.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/subject-page.js"></script>
+</body>
+</html> 

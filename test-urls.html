@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Test - Malleability Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-links { margin: 20px 0; }
+        .test-links a { display: block; margin: 10px 0; padding: 10px; background: #f0f0f0; text-decoration: none; color: #333; border-radius: 5px; }
+        .test-links a:hover { background: #e0e0e0; }
+    </style>
+</head>
+<body>
+    <h1>🧪 URL Structure Test</h1>
+    
+    <h2>New ID-Based URLs:</h2>
+    <div class="test-links">
+        <a href="/subject/1">📚 Biology Subject (ID: 1)</a>
+        <a href="/subject/2">⚗️ Chemistry Subject (ID: 2)</a>
+        <a href="/subject/1/topic/31">🔬 Cell Structure and Function (Biology Topic ID: 31)</a>
+        <a href="/subject/1/topic/32">🧬 Cell Division (Biology Topic ID: 32)</a>
+        <a href="/subject/1/topic/33">⚡ Cellular Respiration (Biology Topic ID: 33)</a>
+        <a href="/subject/1/topic/34">🧬 DNA Structure and Replication (Biology Topic ID: 34)</a>
+        <a href="/subject/2/topic/37">⚛️ Atomic Theory (Chemistry Topic ID: 37)</a>
+    </div>
+    
+    <h2>API Endpoints to Test:</h2>
+    <div class="test-links">
+        <a href="/api/subjects">📋 All Subjects</a>
+        <a href="/api/subjects/1/topics">📖 Biology Topics</a>
+        <a href="/api/subjects/1/quizzes">❓ Biology Quizzes</a>
+        <a href="/api/topics/34/quizzes">❓ DNA Topic Quizzes</a>
+    </div>
+    
+    <h2>Status:</h2>
+    <p>✅ Server running on ID-based URLs</p>
+    <p>✅ Navigation uses subject IDs</p>
+    <p>✅ Topic links use topic IDs</p>
+    <p>📝 No more complex string parsing needed!</p>
+    
+    <p><a href="/" style="background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">← Back to Home</a></p>
+</body>
+</html> 

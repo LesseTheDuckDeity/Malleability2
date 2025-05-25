@@ -1,0 +1,1817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Malleability Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #6c757d;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: white;
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .tab:hover {
+            background: #e9ecef;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .table th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #495057;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .table td {
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+            vertical-align: top;
+        }
+
+        .table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .form {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .close {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #6c757d;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close:hover {
+            background: #f8f9fa;
+            color: #495057;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: #d1edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-beginner {
+            background: #d1edda;
+            color: #155724;
+        }
+
+        .badge-intermediate {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-advanced {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 10px;
+            color: #495057;
+        }
+
+        /* Rich Text Editor Styles */
+        .editor-container {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background: white;
+            transition: border-color 0.3s ease;
+        }
+
+        .editor-container:focus-within {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .ql-toolbar {
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            border: none;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .ql-container {
+            border: none;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .ql-editor {
+            min-height: 200px;
+            padding: 15px;
+        }
+
+        .resources-manager {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            background: white;
+        }
+
+        .resource-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .resource-item input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+        }
+
+        .remove-resource {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .add-resource {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .ai-loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .ai-loading-text {
+            margin-top: 15px;
+            color: #667eea;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .form-row,
+            .form-row-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .table {
+                font-size: 0.875rem;
+            }
+            
+            .modal-content {
+                max-width: 95%;
+                padding: 20px;
+            }
+        }
+    </style>
+    <!-- Quill Rich Text Editor -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛠️ Admin Panel</h1>
+            <p>Manage subjects, topics, and quizzes for the Malleability Dashboard</p>
+            <div style="margin-top: 15px;">
+                <a href="/" class="btn btn-secondary">🏠 Back to Dashboard</a>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showSection('subjects')">📚 Subjects</button>
+            <button class="tab" onclick="showSection('topics')">📖 Topics</button>
+            <button class="tab" onclick="showSection('quizzes')">❓ Quizzes</button>
+        </div>
+
+        <div class="content">
+            <!-- Subjects Section -->
+            <div id="subjects" class="section active">
+                <div class="controls">
+                    <h2>Subjects Management</h2>
+                    <button class="btn" onclick="showSubjectModal()">➕ Add Subject</button>
+                </div>
+                <div id="subjects-table-container">
+                    <div class="loading">Loading subjects...</div>
+                </div>
+            </div>
+
+            <!-- Topics Section -->
+            <div id="topics" class="section">
+                <div class="controls">
+                    <h2>Topics Management</h2>
+                    <button class="btn" onclick="showTopicModal()">➕ Add Topic</button>
+                </div>
+                <div id="topics-table-container">
+                    <div class="loading">Loading topics...</div>
+                </div>
+            </div>
+
+            <!-- Quizzes Section -->
+            <div id="quizzes" class="section">
+                <div class="controls">
+                    <h2>Quizzes Management</h2>
+                    <button class="btn" onclick="showQuizModal()">➕ Add Quiz</button>
+                </div>
+                <div id="quizzes-table-container">
+                    <div class="loading">Loading quizzes...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subject Modal -->
+    <div id="subject-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add Subject</h3>
+                <button class="close" onclick="closeSubjectModal()">&times;</button>
+            </div>
+            <form id="subject-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="subject-name">Subject Name *</label>
+                        <input type="text" id="subject-name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject-emoji">Emoji</label>
+                        <input type="text" id="subject-emoji" class="form-control" placeholder="📚">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="subject-description">Short Description</label>
+                    <textarea id="subject-description" class="form-control" rows="2" placeholder="Brief description for the subject card"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="subject-color">Color Scheme</label>
+                    <select id="subject-color" class="form-control">
+                        <option value="blue">Blue</option>
+                        <option value="green">Green</option>
+                        <option value="purple">Purple</option>
+                        <option value="red">Red</option>
+                        <option value="orange">Orange</option>
+                        <option value="teal">Teal</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="subject-content">Content</label>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <button type="button" class="btn" onclick="showAIModal('subject')" style="font-size: 0.9rem; padding: 8px 16px;">
+                            🤖 Generate with AI
+                        </button>
+                    </div>
+                    <div class="editor-container">
+                        <div id="subject-content-editor"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Resources</label>
+                    <div class="resources-manager">
+                        <div id="resources-container">
+                            <!-- Resources will be added dynamically -->
+                        </div>
+                        <button type="button" class="add-resource" onclick="addResourceField()">+ Add Resource</button>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 15px; justify-content: flex-end; margin-top: 30px;">
+                    <button type="button" class="btn btn-secondary" onclick="closeSubjectModal()">Cancel</button>
+                    <button type="submit" class="btn">Save Subject</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Topic Modal -->
+    <div id="topic-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add Topic</h3>
+                <button class="close" onclick="closeTopicModal()">&times;</button>
+            </div>
+            <form id="topic-form">
+                <div class="form-group">
+                    <label for="topic-subject">Subject *</label>
+                    <select id="topic-subject" class="form-control" required>
+                        <option value="">Select a subject...</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="topic-name">Topic Name *</label>
+                        <input type="text" id="topic-name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="topic-category">Category *</label>
+                        <input type="text" id="topic-category" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="topic-description">Short Description</label>
+                    <textarea id="topic-description" class="form-control" rows="2" placeholder="Brief description for the topic card"></textarea>
+                </div>
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label for="topic-difficulty">Difficulty</label>
+                        <select id="topic-difficulty" class="form-control">
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="topic-duration">Duration</label>
+                        <input type="text" id="topic-duration" class="form-control" placeholder="30 min read">
+                    </div>
+                    <div class="form-group">
+                        <label for="topic-order">Order Index</label>
+                        <input type="number" id="topic-order" class="form-control" min="1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="topic-content">Content</label>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <button type="button" class="btn" onclick="showAIModal('topic')" style="font-size: 0.9rem; padding: 8px 16px;">
+                            🤖 Generate with AI
+                        </button>
+                    </div>
+                    <div class="editor-container">
+                        <div id="topic-content-editor"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Resources</label>
+                    <div class="resources-manager">
+                        <div id="topic-resources-container">
+                            <!-- Resources will be added dynamically -->
+                        </div>
+                        <button type="button" class="add-resource" onclick="addTopicResourceField()">+ Add Resource</button>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 15px; justify-content: flex-end; margin-top: 30px;">
+                    <button type="button" class="btn btn-secondary" onclick="closeTopicModal()">Cancel</button>
+                    <button type="submit" class="btn">Save Topic</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quiz-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add Quiz</h3>
+                <button class="close" onclick="closeQuizModal()">&times;</button>
+            </div>
+            <form id="quiz-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="quiz-subject">Subject</label>
+                        <select id="quiz-subject" class="form-control" onchange="loadQuizTopics()">
+                            <option value="">Subject-level quiz</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="quiz-topic">Topic</label>
+                        <select id="quiz-topic" class="form-control">
+                            <option value="">Select a topic...</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="quiz-question">Question *</label>
+                    <textarea id="quiz-question" class="form-control" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Answer Options *</label>
+                    <input type="text" id="quiz-option-0" class="form-control" placeholder="Option 1" required style="margin-bottom: 10px;">
+                    <input type="text" id="quiz-option-1" class="form-control" placeholder="Option 2" required style="margin-bottom: 10px;">
+                    <input type="text" id="quiz-option-2" class="form-control" placeholder="Option 3" required style="margin-bottom: 10px;">
+                    <input type="text" id="quiz-option-3" class="form-control" placeholder="Option 4" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="quiz-correct">Correct Answer *</label>
+                        <select id="quiz-correct" class="form-control" required>
+                            <option value="0">Option 1</option>
+                            <option value="1">Option 2</option>
+                            <option value="2">Option 3</option>
+                            <option value="3">Option 4</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="quiz-order">Order Index</label>
+                        <input type="number" id="quiz-order" class="form-control" min="1" value="1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="quiz-explanation">Explanation</label>
+                    <textarea id="quiz-explanation" class="form-control" rows="3"></textarea>
+                </div>
+                <div style="display: flex; gap: 15px; justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" onclick="closeQuizModal()">Cancel</button>
+                    <button type="submit" class="btn">Save Quiz</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- AI Content Generation Modal -->
+    <div id="ai-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">🤖 AI Content Generator</h3>
+                <button class="close" onclick="closeAIModal()">&times;</button>
+            </div>
+            <div id="ai-loading" style="display: none; text-align: center; padding: 30px;">
+                <div class="ai-loading-spinner"></div>
+                <p class="ai-loading-text">Generating content with AI...</p>
+            </div>
+            <div id="ai-form">
+                <div class="form-group">
+                    <label for="ai-content-type">Content Type</label>
+                    <select id="ai-content-type" class="form-control" onchange="updateAIPrompt()">
+                        <option value="subject">Subject Content</option>
+                        <option value="topic">Topic Content</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="ai-prompt">AI Prompt</label>
+                    <textarea id="ai-prompt" class="form-control" rows="8" placeholder="Enter your prompt for AI content generation..."></textarea>
+                    <small style="color: #6c757d; margin-top: 5px; display: block;">
+                        💡 Tip: Be specific about the subject/topic, difficulty level, and what you want to include (learning objectives, key concepts, examples, etc.)
+                    </small>
+                </div>
+                <div style="display: flex; gap: 15px; justify-content: flex-end; margin-top: 30px;">
+                    <button type="button" class="btn btn-secondary" onclick="closeAIModal()">Cancel</button>
+                    <button type="button" class="btn" onclick="generateAIContent()" id="generate-btn">🚀 Generate Content</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let subjects = [];
+        let topics = [];
+        let quizzes = [];
+        let editingItem = null;
+        let subjectContentEditor = null;
+        let topicContentEditor = null;
+
+        // Initialize the admin panel
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Initialize Quill editors
+            subjectContentEditor = new Quill('#subject-content-editor', {
+                theme: 'snow',
+                placeholder: 'Enter detailed subject content...',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        ['blockquote', 'code-block'],
+                        ['link', 'image'],
+                        ['clean']
+                    ]
+                }
+            });
+
+            topicContentEditor = new Quill('#topic-content-editor', {
+                theme: 'snow',
+                placeholder: 'Enter detailed topic content...',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        ['blockquote', 'code-block'],
+                        ['link', 'image'],
+                        ['clean']
+                    ]
+                }
+            });
+
+            // Add event listeners for dynamic AI prompt updates
+            const subjectNameField = document.getElementById('subject-name');
+            const topicNameField = document.getElementById('topic-name');
+            const topicSubjectField = document.getElementById('topic-subject');
+            
+            if (subjectNameField) {
+                subjectNameField.addEventListener('input', () => {
+                    if (currentAITarget === 'subject' && document.getElementById('ai-modal').classList.contains('active')) {
+                        updateAIPrompt();
+                    }
+                });
+            }
+            
+            if (topicNameField) {
+                topicNameField.addEventListener('input', () => {
+                    if (currentAITarget === 'topic' && document.getElementById('ai-modal').classList.contains('active')) {
+                        updateAIPrompt();
+                    }
+                });
+            }
+            
+            if (topicSubjectField) {
+                topicSubjectField.addEventListener('change', () => {
+                    if (currentAITarget === 'topic' && document.getElementById('ai-modal').classList.contains('active')) {
+                        updateAIPrompt();
+                    }
+                });
+            }
+
+            await loadAllData();
+            renderSubjects();
+        });
+
+        // Section management
+        function showSection(sectionName) {
+            // Update tabs
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Update sections
+            document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+            document.getElementById(sectionName).classList.add('active');
+
+            // Load data for the section
+            switch(sectionName) {
+                case 'subjects':
+                    renderSubjects();
+                    break;
+                case 'topics':
+                    loadAndRenderTopics();
+                    break;
+                case 'quizzes':
+                    renderQuizzes();
+                    break;
+            }
+        }
+
+        // Helper function to load and render topics
+        async function loadAndRenderTopics() {
+            // Show loading state
+            const container = document.getElementById('topics-table-container');
+            container.innerHTML = '<div class="loading">Loading topics...</div>';
+            
+            try {
+                await loadTopics();
+                renderTopics();
+            } catch (error) {
+                console.error('Error loading topics:', error);
+                container.innerHTML = '<div class="error-message">Error loading topics. Please try again.</div>';
+            }
+        }
+
+        // Data loading functions
+        async function loadAllData() {
+            try {
+                // Load subjects first since topics depend on subjects
+                await loadSubjects();
+                // Then load topics and quizzes
+                await Promise.all([
+                    loadTopics(),
+                    loadQuizzes()
+                ]);
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showAlert('Error loading admin data', 'error');
+            }
+        }
+
+        async function loadSubjects() {
+            try {
+                const response = await fetch('/api/subjects');
+                const data = await response.json();
+                subjects = data.subjects || [];
+                populateSubjectSelects();
+            } catch (error) {
+                console.error('Error loading subjects:', error);
+                showAlert('Error loading subjects', 'error');
+            }
+        }
+
+        async function loadTopics() {
+            try {
+                console.log('🔄 Loading topics...');
+                console.log('📚 Available subjects for topic loading:', subjects.map(s => `${s.id}: ${s.name}`));
+                
+                topics = [];
+                for (const subject of subjects) {
+                    console.log(`📖 Loading topics for subject ${subject.id}: ${subject.name}`);
+                    const response = await fetch(`/api/subjects/${subject.id}/topics`);
+                    const data = await response.json();
+                    if (data.topics) {
+                        console.log(`✅ Found ${data.topics.length} topics for ${subject.name}`);
+                        topics.push(...data.topics);
+                    } else {
+                        console.log(`⚠️ No topics found for ${subject.name}`);
+                    }
+                }
+                console.log(`🎯 Total topics loaded: ${topics.length}`);
+            } catch (error) {
+                console.error('❌ Error loading topics:', error);
+                showAlert('Error loading topics', 'error');
+            }
+        }
+
+        async function loadQuizzes() {
+            try {
+                const response = await fetch('/api/quizzes');
+                const data = await response.json();
+                quizzes = data.quizzes || [];
+            } catch (error) {
+                console.error('Error loading quizzes:', error);
+                showAlert('Error loading quizzes', 'error');
+            }
+        }
+
+        // Populate select options
+        function populateSubjectSelects() {
+            const selects = ['topic-subject', 'quiz-subject'];
+            selects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                const currentValue = select.value;
+                
+                // Keep existing first option
+                const firstOption = select.children[0];
+                select.innerHTML = '';
+                select.appendChild(firstOption);
+                
+                subjects.forEach(subject => {
+                    const option = document.createElement('option');
+                    option.value = subject.id;
+                    option.textContent = subject.name;
+                    select.appendChild(option);
+                });
+                
+                if (currentValue) select.value = currentValue;
+            });
+        }
+
+        async function loadQuizTopics() {
+            const subjectId = document.getElementById('quiz-subject').value;
+            const topicSelect = document.getElementById('quiz-topic');
+            
+            topicSelect.innerHTML = '<option value="">Select a topic...</option>';
+            
+            if (subjectId) {
+                try {
+                    const response = await fetch(`/api/subjects/${subjectId}/topics`);
+                    const data = await response.json();
+                    
+                    if (data.topics) {
+                        data.topics.forEach(topic => {
+                            const option = document.createElement('option');
+                            option.value = topic.id;
+                            option.textContent = topic.name;
+                            topicSelect.appendChild(option);
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error loading topics for quiz:', error);
+                }
+            }
+        }
+
+        // Render functions
+        function renderSubjects() {
+            const container = document.getElementById('subjects-table-container');
+            
+            if (subjects.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No subjects found</h3>
+                        <p>Get started by adding your first subject!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Color</th>
+                            <th>Topics</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${subjects.map(subject => {
+                            const subjectTopics = topics.filter(t => t.subject_id === subject.id);
+                            return `
+                                <tr>
+                                    <td>${subject.id}</td>
+                                    <td>${subject.emoji || '📚'} ${subject.name}</td>
+                                    <td>${subject.description || 'No description'}</td>
+                                    <td><span class="badge badge-${subject.color_scheme || 'blue'}">${subject.color_scheme || 'blue'}</span></td>
+                                    <td>${subjectTopics.length} topics</td>
+                                    <td>
+                                        <button class="btn btn-secondary" onclick="editSubject(${subject.id})">Edit</button>
+                                        <button class="btn btn-danger" onclick="deleteSubject(${subject.id})">Delete</button>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function renderTopics() {
+            const container = document.getElementById('topics-table-container');
+            
+            if (topics.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No topics found</h3>
+                        <p>Add some topics to organize your content!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Subject</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Difficulty</th>
+                            <th>Duration</th>
+                            <th>Order</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${topics.map(topic => {
+                            const subject = subjects.find(s => s.id === topic.subject_id);
+                            return `
+                                <tr>
+                                    <td>${topic.id}</td>
+                                    <td>${subject ? subject.name : 'Unknown'}</td>
+                                    <td>${topic.name}</td>
+                                    <td>${topic.category}</td>
+                                    <td><span class="badge badge-${topic.difficulty?.toLowerCase() || 'beginner'}">${topic.difficulty || 'Beginner'}</span></td>
+                                    <td>${topic.duration || 'Not set'}</td>
+                                    <td>${topic.order_index || 0}</td>
+                                    <td>
+                                        <button class="btn btn-secondary" onclick="editTopic(${topic.id})">Edit</button>
+                                        <button class="btn btn-danger" onclick="deleteTopic(${topic.id})">Delete</button>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function renderQuizzes() {
+            const container = document.getElementById('quizzes-table-container');
+            
+            if (quizzes.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No quizzes found</h3>
+                        <p>Create some quizzes to test knowledge!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Subject/Topic</th>
+                            <th>Question</th>
+                            <th>Options</th>
+                            <th>Correct</th>
+                            <th>Order</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${quizzes.map(quiz => {
+                            let context = 'Unknown';
+                            if (quiz.subject_id && !quiz.topic_id) {
+                                const subject = subjects.find(s => s.id === quiz.subject_id);
+                                context = subject ? `📚 ${subject.name}` : 'Subject-level';
+                            } else if (quiz.topic_id) {
+                                const topic = topics.find(t => t.id === quiz.topic_id);
+                                context = topic ? `📖 ${topic.name}` : 'Topic-level';
+                            }
+                            
+                            const options = quiz.options || [];
+                            return `
+                                <tr>
+                                    <td>${quiz.id}</td>
+                                    <td>${context}</td>
+                                    <td style="max-width: 300px;">${quiz.question}</td>
+                                    <td style="max-width: 200px;">${options.join(', ')}</td>
+                                    <td>Option ${(quiz.correct_answer || 0) + 1}</td>
+                                    <td>${quiz.order_index || 0}</td>
+                                    <td>
+                                        <button class="btn btn-secondary" onclick="editQuiz(${quiz.id})">Edit</button>
+                                        <button class="btn btn-danger" onclick="deleteQuiz(${quiz.id})">Delete</button>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        // Resource management functions
+        function addResourceField(title = '', description = '', type = 'textbook', url = '') {
+            const container = document.getElementById('resources-container');
+            const resourceDiv = document.createElement('div');
+            resourceDiv.className = 'resource-item';
+            resourceDiv.innerHTML = `
+                <input type="text" placeholder="Title" value="${title}" class="resource-title">
+                <input type="text" placeholder="Description" value="${description}" class="resource-description">
+                <select class="resource-type">
+                    <option value="textbook" ${type === 'textbook' ? 'selected' : ''}>Textbook</option>
+                    <option value="online_course" ${type === 'online_course' ? 'selected' : ''}>Online Course</option>
+                    <option value="video_series" ${type === 'video_series' ? 'selected' : ''}>Video Series</option>
+                    <option value="research" ${type === 'research' ? 'selected' : ''}>Research</option>
+                    <option value="reference" ${type === 'reference' ? 'selected' : ''}>Reference</option>
+                    <option value="software" ${type === 'software' ? 'selected' : ''}>Software</option>
+                    <option value="interactive_tool" ${type === 'interactive_tool' ? 'selected' : ''}>Interactive Tool</option>
+                    <option value="professional" ${type === 'professional' ? 'selected' : ''}>Professional</option>
+                </select>
+                <input type="url" placeholder="URL (optional)" value="${url}" class="resource-url">
+                <button type="button" class="remove-resource" onclick="this.parentElement.remove()">Remove</button>
+            `;
+            container.appendChild(resourceDiv);
+        }
+
+        function getResourcesData() {
+            const resources = [];
+            const resourceItems = document.querySelectorAll('.resource-item');
+            resourceItems.forEach(item => {
+                const title = item.querySelector('.resource-title').value.trim();
+                const description = item.querySelector('.resource-description').value.trim();
+                const type = item.querySelector('.resource-type').value;
+                const url = item.querySelector('.resource-url').value.trim();
+                
+                if (title && description) {
+                    resources.push({ title, description, type, url });
+                }
+            });
+            return resources;
+        }
+
+        function loadResourcesData(resources) {
+            const container = document.getElementById('resources-container');
+            container.innerHTML = '';
+            
+            if (resources && resources.length > 0) {
+                resources.forEach(resource => {
+                    addResourceField(resource.title, resource.description, resource.type, resource.url);
+                });
+            } else {
+                addResourceField(); // Add one empty field
+            }
+        }
+
+        // Topic resource management functions
+        function addTopicResourceField(title = '', description = '', type = 'textbook', url = '') {
+            const container = document.getElementById('topic-resources-container');
+            const resourceDiv = document.createElement('div');
+            resourceDiv.className = 'resource-item';
+            resourceDiv.innerHTML = `
+                <input type="text" placeholder="Title" value="${title}" class="topic-resource-title">
+                <input type="text" placeholder="Description" value="${description}" class="topic-resource-description">
+                <select class="topic-resource-type">
+                    <option value="textbook" ${type === 'textbook' ? 'selected' : ''}>Textbook</option>
+                    <option value="online_course" ${type === 'online_course' ? 'selected' : ''}>Online Course</option>
+                    <option value="video_series" ${type === 'video_series' ? 'selected' : ''}>Video Series</option>
+                    <option value="research" ${type === 'research' ? 'selected' : ''}>Research</option>
+                    <option value="reference" ${type === 'reference' ? 'selected' : ''}>Reference</option>
+                    <option value="software" ${type === 'software' ? 'selected' : ''}>Software</option>
+                    <option value="interactive_tool" ${type === 'interactive_tool' ? 'selected' : ''}>Interactive Tool</option>
+                    <option value="professional" ${type === 'professional' ? 'selected' : ''}>Professional</option>
+                </select>
+                <input type="url" placeholder="URL (optional)" value="${url}" class="topic-resource-url">
+                <button type="button" class="remove-resource" onclick="this.parentElement.remove()">Remove</button>
+            `;
+            container.appendChild(resourceDiv);
+        }
+
+        function getTopicResourcesData() {
+            const resources = [];
+            const resourceItems = document.querySelectorAll('#topic-resources-container .resource-item');
+            resourceItems.forEach(item => {
+                const title = item.querySelector('.topic-resource-title').value.trim();
+                const description = item.querySelector('.topic-resource-description').value.trim();
+                const type = item.querySelector('.topic-resource-type').value;
+                const url = item.querySelector('.topic-resource-url').value.trim();
+                
+                if (title && description) {
+                    resources.push({ title, description, type, url });
+                }
+            });
+            return resources;
+        }
+
+        function loadTopicResourcesData(resources) {
+            const container = document.getElementById('topic-resources-container');
+            container.innerHTML = '';
+            
+            if (resources && resources.length > 0) {
+                resources.forEach(resource => {
+                    addTopicResourceField(resource.title, resource.description, resource.type, resource.url);
+                });
+            } else {
+                addTopicResourceField(); // Add one empty field
+            }
+        }
+
+        // Subject modal functions
+        function showSubjectModal(subjectId = null) {
+            editingItem = subjectId;
+            const modal = document.getElementById('subject-modal');
+            const title = modal.querySelector('.modal-title');
+            
+            if (subjectId) {
+                const subject = subjects.find(s => s.id === subjectId);
+                title.textContent = 'Edit Subject';
+                document.getElementById('subject-name').value = subject.name;
+                document.getElementById('subject-emoji').value = subject.emoji || '';
+                document.getElementById('subject-description').value = subject.description || '';
+                document.getElementById('subject-color').value = subject.color_scheme || 'blue';
+                
+                // Load content in editor using proper Quill method
+                if (subject.content) {
+                    subjectContentEditor.clipboard.dangerouslyPasteHTML(subject.content);
+                } else {
+                    subjectContentEditor.setText('');
+                }
+                
+                // Load resources
+                let resources = [];
+                try {
+                    resources = subject.resources ? JSON.parse(subject.resources) : [];
+                } catch (e) {
+                    console.error('Error parsing resources:', e);
+                }
+                loadResourcesData(resources);
+            } else {
+                title.textContent = 'Add Subject';
+                document.getElementById('subject-form').reset();
+                subjectContentEditor.setText('');
+                loadResourcesData([]); // Add one empty resource field
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeSubjectModal() {
+            document.getElementById('subject-modal').classList.remove('active');
+            editingItem = null;
+        }
+
+        // Topic modal functions
+        function showTopicModal(topicId = null) {
+            editingItem = topicId;
+            const modal = document.getElementById('topic-modal');
+            const title = modal.querySelector('.modal-title');
+            
+            if (topicId) {
+                const topic = topics.find(t => t.id === topicId);
+                title.textContent = 'Edit Topic';
+                document.getElementById('topic-subject').value = topic.subject_id;
+                document.getElementById('topic-name').value = topic.name;
+                document.getElementById('topic-category').value = topic.category;
+                document.getElementById('topic-description').value = topic.description || '';
+                document.getElementById('topic-difficulty').value = topic.difficulty || 'Beginner';
+                document.getElementById('topic-duration').value = topic.duration || '';
+                document.getElementById('topic-order').value = topic.order_index || 1;
+                
+                // Load content in editor using proper Quill method
+                if (topic.content) {
+                    topicContentEditor.clipboard.dangerouslyPasteHTML(topic.content);
+                } else {
+                    topicContentEditor.setText('');
+                }
+                
+                // Load resources
+                let resources = [];
+                try {
+                    resources = topic.resources ? JSON.parse(topic.resources) : [];
+                } catch (e) {
+                    console.error('Error parsing topic resources:', e);
+                }
+                loadTopicResourcesData(resources);
+            } else {
+                title.textContent = 'Add Topic';
+                document.getElementById('topic-form').reset();
+                topicContentEditor.setText('');
+                loadTopicResourcesData([]); // Add one empty resource field
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeTopicModal() {
+            document.getElementById('topic-modal').classList.remove('active');
+            editingItem = null;
+        }
+
+        // Quiz modal functions
+        function showQuizModal(quizId = null) {
+            editingItem = quizId;
+            const modal = document.getElementById('quiz-modal');
+            const title = modal.querySelector('.modal-title');
+            
+            if (quizId) {
+                const quiz = quizzes.find(q => q.id === quizId);
+                title.textContent = 'Edit Quiz';
+                document.getElementById('quiz-subject').value = quiz.subject_id || '';
+                document.getElementById('quiz-topic').value = quiz.topic_id || '';
+                document.getElementById('quiz-question').value = quiz.question;
+                
+                const options = quiz.options || [];
+                for (let i = 0; i < 4; i++) {
+                    document.getElementById(`quiz-option-${i}`).value = options[i] || '';
+                }
+                
+                document.getElementById('quiz-correct').value = quiz.correct_answer || 0;
+                document.getElementById('quiz-order').value = quiz.order_index || 1;
+                document.getElementById('quiz-explanation').value = quiz.explanation || '';
+                
+                // Load topics for the selected subject
+                if (quiz.subject_id) {
+                    loadQuizTopics();
+                }
+            } else {
+                title.textContent = 'Add Quiz';
+                document.getElementById('quiz-form').reset();
+                document.getElementById('quiz-order').value = 1;
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeQuizModal() {
+            document.getElementById('quiz-modal').classList.remove('active');
+            editingItem = null;
+        }
+
+        // CRUD operations
+        async function saveSubject(event) {
+            event.preventDefault();
+            
+            const data = {
+                name: document.getElementById('subject-name').value,
+                emoji: document.getElementById('subject-emoji').value,
+                description: document.getElementById('subject-description').value,
+                color_scheme: document.getElementById('subject-color').value,
+                content: subjectContentEditor.root.innerHTML,
+                resources: JSON.stringify(getResourcesData())
+            };
+
+            try {
+                let response;
+                if (editingItem) {
+                    response = await fetch(`/api/subjects/${editingItem}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                } else {
+                    response = await fetch('/api/subjects', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                }
+
+                if (response.ok) {
+                    showAlert(editingItem ? 'Subject updated successfully!' : 'Subject created successfully!', 'success');
+                    closeSubjectModal();
+                    await loadSubjects();
+                    renderSubjects();
+                } else {
+                    const error = await response.json();
+                    showAlert(error.error || 'Error saving subject', 'error');
+                }
+            } catch (error) {
+                showAlert('Error saving subject', 'error');
+                console.error(error);
+            }
+        }
+
+        async function saveTopic(event) {
+            event.preventDefault();
+            
+            const data = {
+                subject_id: parseInt(document.getElementById('topic-subject').value),
+                name: document.getElementById('topic-name').value,
+                category: document.getElementById('topic-category').value,
+                description: document.getElementById('topic-description').value,
+                difficulty: document.getElementById('topic-difficulty').value,
+                duration: document.getElementById('topic-duration').value,
+                order_index: parseInt(document.getElementById('topic-order').value) || 1,
+                content: topicContentEditor.root.innerHTML,
+                resources: JSON.stringify(getTopicResourcesData())
+            };
+
+            try {
+                let response;
+                if (editingItem) {
+                    response = await fetch(`/api/topics/${editingItem}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                } else {
+                    response = await fetch('/api/topics', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                }
+
+                if (response.ok) {
+                    showAlert(editingItem ? 'Topic updated successfully!' : 'Topic created successfully!', 'success');
+                    closeTopicModal();
+                    await loadTopics();
+                    renderTopics();
+                } else {
+                    const error = await response.json();
+                    showAlert(error.error || 'Error saving topic', 'error');
+                }
+            } catch (error) {
+                showAlert('Error saving topic', 'error');
+                console.error(error);
+            }
+        }
+
+        async function saveQuiz(event) {
+            event.preventDefault();
+            
+            const options = [];
+            for (let i = 0; i < 4; i++) {
+                const option = document.getElementById(`quiz-option-${i}`).value.trim();
+                if (option) options.push(option);
+            }
+
+            const subjectId = document.getElementById('quiz-subject').value;
+            const topicId = document.getElementById('quiz-topic').value;
+
+            const data = {
+                subject_id: subjectId || null,
+                topic_id: topicId || null,
+                question: document.getElementById('quiz-question').value,
+                options: options,
+                correct_answer: parseInt(document.getElementById('quiz-correct').value),
+                explanation: document.getElementById('quiz-explanation').value,
+                order_index: parseInt(document.getElementById('quiz-order').value) || 1
+            };
+
+            try {
+                let response;
+                if (editingItem) {
+                    response = await fetch(`/api/quizzes/${editingItem}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                } else {
+                    response = await fetch('/api/quizzes', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                }
+
+                if (response.ok) {
+                    showAlert(editingItem ? 'Quiz updated successfully!' : 'Quiz created successfully!', 'success');
+                    closeQuizModal();
+                    await loadQuizzes();
+                    renderQuizzes();
+                } else {
+                    const error = await response.json();
+                    showAlert(error.error || 'Error saving quiz', 'error');
+                }
+            } catch (error) {
+                showAlert('Error saving quiz', 'error');
+                console.error(error);
+            }
+        }
+
+        // Edit functions
+        function editSubject(id) {
+            showSubjectModal(id);
+        }
+
+        function editTopic(id) {
+            showTopicModal(id);
+        }
+
+        function editQuiz(id) {
+            showQuizModal(id);
+        }
+
+        // Delete functions
+        async function deleteSubject(id) {
+            if (!confirm('Are you sure you want to delete this subject? This will also delete all related topics and quizzes.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/subjects/${id}`, { method: 'DELETE' });
+                if (response.ok) {
+                    showAlert('Subject deleted successfully!', 'success');
+                    await loadAllData();
+                    renderSubjects();
+                } else {
+                    const error = await response.json();
+                    showAlert(error.error || 'Error deleting subject', 'error');
+                }
+            } catch (error) {
+                showAlert('Error deleting subject', 'error');
+                console.error(error);
+            }
+        }
+
+        async function deleteTopic(id) {
+            if (!confirm('Are you sure you want to delete this topic? This will also delete all related quizzes.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/topics/${id}`, { method: 'DELETE' });
+                if (response.ok) {
+                    showAlert('Topic deleted successfully!', 'success');
+                    await loadAllData();
+                    renderTopics();
+                } else {
+                    const error = await response.json();
+                    showAlert(error.error || 'Error deleting topic', 'error');
+                }
+            } catch (error) {
+                showAlert('Error deleting topic', 'error');
+                console.error(error);
+            }
+        }
+
+        async function deleteQuiz(id) {
+            if (!confirm('Are you sure you want to delete this quiz?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/quizzes/${id}`, { method: 'DELETE' });
+                if (response.ok) {
+                    showAlert('Quiz deleted successfully!', 'success');
+                    await loadQuizzes();
+                    renderQuizzes();
+                } else {
+                    const error = await response.json();
+                    showAlert(error.error || 'Error deleting quiz', 'error');
+                }
+            } catch (error) {
+                showAlert('Error deleting quiz', 'error');
+                console.error(error);
+            }
+        }
+
+        // Utility functions
+        function showAlert(message, type) {
+            // Remove existing alerts
+            const existing = document.querySelectorAll('.alert');
+            existing.forEach(alert => alert.remove());
+
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            
+            document.querySelector('.content').insertBefore(alert, document.querySelector('.content').firstChild);
+            
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+
+        // Form event listeners
+        document.getElementById('subject-form').addEventListener('submit', saveSubject);
+        document.getElementById('topic-form').addEventListener('submit', saveTopic);
+        document.getElementById('quiz-form').addEventListener('submit', saveQuiz);
+
+        // Close modals when clicking outside
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                    editingItem = null;
+                }
+            });
+        });
+
+        // AI Content Generation Functions
+        let currentAITarget = null;
+
+        function showAIModal(type) {
+            currentAITarget = type;
+            document.getElementById('ai-content-type').value = type;
+            
+            // Reset modal state
+            document.getElementById('ai-loading').style.display = 'none';
+            document.getElementById('ai-form').style.display = 'block';
+            document.getElementById('generate-btn').disabled = false;
+            
+            // Update prompt with current context
+            updateAIPrompt();
+            
+            document.getElementById('ai-modal').classList.add('active');
+        }
+
+        function closeAIModal() {
+            document.getElementById('ai-modal').classList.remove('active');
+            currentAITarget = null;
+            document.getElementById('ai-prompt').value = '';
+            document.getElementById('ai-loading').style.display = 'none';
+            document.getElementById('ai-form').style.display = 'block';
+        }
+
+        function updateAIPrompt() {
+            const type = document.getElementById('ai-content-type').value;
+            const promptField = document.getElementById('ai-prompt');
+            
+            // Get current context (subject/topic name)
+            let contextName = '';
+            let subjectName = '';
+            
+            if (type === 'subject') {
+                if (editingItem) {
+                    // Editing existing subject
+                    const subject = subjects.find(s => s.id === editingItem);
+                    contextName = subject ? subject.name : '';
+                } else {
+                    // Creating new subject
+                    contextName = document.getElementById('subject-name').value || '[SPECIFY SUBJECT NAME]';
+                }
+                
+                promptField.value = `Create comprehensive, university-level educational content for the subject: ${contextName}
+
+REQUIREMENTS:
+- Academic depth appropriate for undergraduate/graduate level
+- Evidence-based content with scientific rigor
+- Practical applications and real-world connections
+- Clear learning progression from fundamentals to advanced concepts
+
+STRUCTURE TO INCLUDE:
+
+1. **Course Overview** (2-3 paragraphs)
+   - Fundamental principles and core concepts
+   - Historical context and modern developments
+   - Interconnections with other fields
+
+2. **Learning Objectives** (6-8 specific, measurable outcomes)
+   - Use Bloom's taxonomy verbs (analyze, evaluate, synthesize, apply)
+   - Include both theoretical understanding and practical skills
+   - Progressive complexity from basic to advanced
+
+3. **Core Topics Covered** (5-7 major areas)
+   - Each with detailed description of key concepts
+   - Prerequisites and learning dependencies
+   - Specific skills and knowledge gained
+   - Industry/research applications
+
+4. **Why Study This Subject** (2-3 paragraphs)
+   - Career pathways and professional opportunities
+   - Contribution to scientific understanding
+   - Societal impact and global challenges addressed
+   - Interdisciplinary connections
+
+5. **Assessment Methods** (optional)
+   - Types of evaluations used
+   - Skills being measured
+
+TONE: Academic but accessible, engaging, authoritative
+FORMAT: HTML with proper tags (<h2>, <h3>, <p>, <ul>, <li>, <strong>)
+DEPTH: University textbook level with practical insights`;
+                
+            } else {
+                if (editingItem) {
+                    // Editing existing topic
+                    const topic = topics.find(t => t.id === editingItem);
+                    if (topic) {
+                        contextName = topic.name;
+                        const subject = subjects.find(s => s.id === topic.subject_id);
+                        subjectName = subject ? subject.name : '';
+                    }
+                } else {
+                    // Creating new topic
+                    contextName = document.getElementById('topic-name').value || '[SPECIFY TOPIC NAME]';
+                    const subjectId = document.getElementById('topic-subject').value;
+                    if (subjectId) {
+                        const subject = subjects.find(s => s.id == subjectId);
+                        subjectName = subject ? subject.name : '';
+                    }
+                }
+                
+                promptField.value = `Create detailed, lesson-level educational content for the topic: ${contextName}
+${subjectName ? `Subject Area: ${subjectName}` : 'Subject Area: [SPECIFY SUBJECT]'}
+
+REQUIREMENTS:
+- Depth suitable for focused study session (45-90 minutes)
+- Hands-on examples and concrete applications
+- Progressive skill building within the topic
+- Connections to broader subject concepts
+
+STRUCTURE TO INCLUDE:
+
+1. **Topic Introduction** (2 paragraphs)
+   - Precise definition and scope
+   - Why this topic is crucial within the broader subject
+   - Prerequisites and foundational knowledge needed
+
+2. **Learning Objectives** (4-6 specific outcomes)
+   - Concrete, measurable skills students will gain
+   - Use action verbs: calculate, demonstrate, design, evaluate
+   - Include both conceptual understanding and practical application
+
+3. **Core Concepts** (5-8 key ideas)
+   - Each concept with clear explanation
+   - Mathematical formulas, equations, or processes where relevant
+   - Visual descriptions for complex structures/processes
+   - Common misconceptions and how to avoid them
+
+4. **Step-by-Step Processes** (where applicable)
+   - Detailed methodology or procedures
+   - Problem-solving approaches
+   - Troubleshooting common issues
+
+5. **Real-World Applications** (3-4 examples)
+   - Industry use cases
+   - Current research applications
+   - Historical significance or discoveries
+   - Technology implementations
+
+6. **Practice Scenarios** (optional)
+   - Types of problems students should be able to solve
+   - Skill demonstration opportunities
+
+TONE: Instructional, detailed, practical
+FORMAT: HTML with proper tags (<h2>, <h3>, <p>, <ul>, <li>, <strong>)
+DEPTH: Textbook chapter level with workbook elements`;
+            }
+        }
+
+        async function generateAIContent() {
+            const prompt = document.getElementById('ai-prompt').value.trim();
+            
+            if (!prompt) {
+                showAlert('Please enter a prompt for AI generation', 'error');
+                return;
+            }
+
+            // Show loading state - make sure it's visible
+            const loadingDiv = document.getElementById('ai-loading');
+            const formDiv = document.getElementById('ai-form');
+            const generateBtn = document.getElementById('generate-btn');
+            
+            loadingDiv.style.display = 'block';
+            formDiv.style.display = 'none';
+            generateBtn.disabled = true;
+            
+            try {
+                const response = await fetch('/api/generate-content', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        prompt: prompt,
+                        type: currentAITarget
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to generate content');
+                }
+
+                // Clean up any remaining markdown formatting that might have slipped through
+                let cleanContent = data.content
+                    .replace(/```html\s*/gi, '')  // Remove opening ```html
+                    .replace(/```\s*$/gm, '')     // Remove closing ```
+                    .replace(/^```.*$/gm, '')     // Remove any other code block markers
+                    .trim();
+
+                // Insert generated content into the appropriate editor
+                if (currentAITarget === 'subject') {
+                    subjectContentEditor.clipboard.dangerouslyPasteHTML(cleanContent);
+                } else if (currentAITarget === 'topic') {
+                    topicContentEditor.clipboard.dangerouslyPasteHTML(cleanContent);
+                }
+
+                showAlert('✨ Content generated successfully! You can now edit it before saving.', 'success');
+                closeAIModal();
+                
+            } catch (error) {
+                console.error('AI Generation Error:', error);
+                showAlert('Failed to generate content: ' + error.message, 'error');
+            } finally {
+                // Hide loading state
+                loadingDiv.style.display = 'none';
+                formDiv.style.display = 'block';
+                generateBtn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html> 

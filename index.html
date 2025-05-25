@@ -15,18 +15,13 @@
                 <h2>Malleability</h2>
             </div>
             <ul class="sidebar-menu">
-                <li><a href="index.html" class="menu-item active" data-page="home">Home</a></li>
-                <li><a href="pages/biology.html" class="menu-item" data-page="biology">Biology</a></li>
-                <li><a href="pages/chemistry.html" class="menu-item" data-page="chemistry">Chemistry</a></li>
-                <li><a href="pages/physics.html" class="menu-item" data-page="physics">Physics</a></li>
-                <li><a href="pages/maths.html" class="menu-item" data-page="maths">Maths</a></li>
-                <li><a href="pages/latin.html" class="menu-item" data-page="latin">Latin</a></li>
-                <li><a href="pages/music-theory.html" class="menu-item" data-page="music-theory">Music Theory</a></li>
-                <li><a href="pages/psychology.html" class="menu-item" data-page="psychology">Psychology</a></li>
-                <li><a href="pages/politics.html" class="menu-item" data-page="politics">Politics</a></li>
-                <li><a href="pages/programming.html" class="menu-item" data-page="programming">Programming</a></li>
-                <li><a href="pages/profile.html" class="menu-item" data-page="profile">Profile</a></li>
+                <!-- Menu items will be loaded dynamically from database -->
+                <li><a href="/" class="menu-item active" data-page="home">🏠 Home</a></li>
+                <li class="loading-menu">Loading subjects...</li>
             </ul>
+            <div class="sidebar-footer">
+                <a href="/admin.html" class="admin-link" target="_blank">🛠️ Admin Panel</a>
+            </div>
         </nav>
 
         <!-- Main Content -->
@@ -119,33 +114,7 @@
             <div id="biology" class="page">
                 <div class="subject-header">
                     <h1>Biology</h1>
-                    <p class="subject-description">Explore the fascinating world of living organisms, from molecular processes to ecosystem dynamics. Understand life in all its complexity.</p>
-                </div>
-                
-                <div class="subject-content">
-                    <section class="subject-section">
-                        <h2>📚 Recommended Resources</h2>
-                        <ul class="resource-list">
-                            <li><strong>Campbell Biology</strong> - The definitive textbook for comprehensive biology education</li>
-                            <li><strong>Khan Academy Biology</strong> - Free online courses with interactive lessons</li>
-                            <li><strong>CrashCourse Biology</strong> - Engaging video series covering major topics</li>
-                            <li><strong>Nature Education</strong> - Scientific articles and research papers</li>
-                            <li><strong>BiologyOnline</strong> - Dictionary and study guides for terminology</li>
-                            <li><strong>Coursera Molecular Biology</strong> - University-level courses from top institutions</li>
-                        </ul>
-                    </section>
-                    
-                    <section class="subject-section">
-                        <h2>🧪 Practice Exams</h2>
-                        <div class="quiz-grid">
-                            <a href="#" class="quiz-link" data-quiz="cell-structure">Cell Structure & Function</a>
-                            <a href="#" class="quiz-link" data-quiz="genetics">Genetics & Heredity</a>
-                            <a href="#" class="quiz-link" data-quiz="evolution">Evolution & Natural Selection</a>
-                            <a href="#" class="quiz-link" data-quiz="ecology">Ecology & Ecosystems</a>
-                            <a href="#" class="quiz-link" data-quiz="human-biology">Human Biology</a>
-                            <a href="#" class="quiz-link" data-quiz="molecular-biology">Molecular Biology</a>
-                        </div>
-                    </section>
+                    <p class="subject-description">This subject is now available as a dynamic page. <a href="/subject/1">Visit Biology Subject Page</a></p>
                 </div>
             </div>
             
@@ -153,33 +122,7 @@
             <div id="chemistry" class="page">
                 <div class="subject-header">
                     <h1>Chemistry</h1>
-                    <p class="subject-description">Discover the building blocks of matter and the reactions that shape our world. From atoms to complex molecules.</p>
-                </div>
-                
-                <div class="subject-content">
-                    <section class="subject-section">
-                        <h2>📚 Recommended Resources</h2>
-                        <ul class="resource-list">
-                            <li><strong>Atkins Physical Chemistry</strong> - Advanced textbook for physical chemistry</li>
-                            <li><strong>ChemLibreTexts</strong> - Comprehensive online chemistry library</li>
-                            <li><strong>Periodic Table Pro</strong> - Interactive periodic table with detailed elements</li>
-                            <li><strong>ChemSketch</strong> - Software for drawing chemical structures</li>
-                            <li><strong>MIT Chemistry Lectures</strong> - Free university-level chemistry courses</li>
-                            <li><strong>Royal Society of Chemistry</strong> - Professional resources and journals</li>
-                        </ul>
-                    </section>
-                    
-                    <section class="subject-section">
-                        <h2>⚗️ Practice Exams</h2>
-                        <div class="quiz-grid">
-                            <a href="#" class="quiz-link" data-quiz="atomic-structure">Atomic Structure</a>
-                            <a href="#" class="quiz-link" data-quiz="chemical-bonding">Chemical Bonding</a>
-                            <a href="#" class="quiz-link" data-quiz="organic-chemistry">Organic Chemistry</a>
-                            <a href="#" class="quiz-link" data-quiz="acids-bases">Acids & Bases</a>
-                            <a href="#" class="quiz-link" data-quiz="thermodynamics">Thermodynamics</a>
-                            <a href="#" class="quiz-link" data-quiz="periodic-trends">Periodic Trends</a>
-                        </div>
-                    </section>
+                    <p class="subject-description">This subject is now available as a dynamic page. <a href="/subject/2">Visit Chemistry Subject Page</a></p>
                 </div>
             </div>
             
@@ -423,6 +366,9 @@
         </main>
     </div>
 
+    <script src="js/state-manager.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/quiz-component.js"></script>
     <script src="js/main.js"></script>
     <script src="js/home.js"></script>
 </body>

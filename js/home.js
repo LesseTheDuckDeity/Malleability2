@@ -1,30 +1,44 @@
-// Home page dashboard functionality
+// Home page dashboard functionality with API integration
 class DashboardManager {
     constructor() {
         this.currentDate = new Date();
         this.selectedDate = new Date();
-        this.quotes = [
-            { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
-            { text: "Life is what happens to you while you're busy making other plans.", author: "John Lennon" },
-            { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
-            { text: "It is during our darkest moments that we must focus to see the light.", author: "Aristotle" },
-            { text: "The only impossible journey is the one you never begin.", author: "Tony Robbins" },
-            { text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill" }
-        ];
-        
+        this.state = null; // Will be set after app initialization
         this.initializeDashboard();
     }
 
-    initializeDashboard() {
-        this.initializeTasks();
+    async initializeDashboard() {
+        // Wait for app and state to be available
+        await this.waitForApp();
+        
         this.initializeCalendar();
         this.initializeXPSystem();
-        this.initializeQuotes();
         this.updateCurrentDate();
+        
+        // Initialize with API data
+        await this.initializeTasks();
+        await this.initializeQuotes();
+        
+        // Update calendar after tasks are loaded to show task indicators
+        this.updateCalendar();
     }
 
-    // Tasks System
-    initializeTasks() {
+    async waitForApp() {
+        return new Promise((resolve) => {
+            const checkApp = () => {
+                if (window.app && window.app.state) {
+                    this.state = window.app.state;
+                    resolve();
+                } else {
+                    setTimeout(checkApp, 50);
+                }
+            };
+            checkApp();
+        });
+    }
+
+    // Tasks System - API Integration
+    async initializeTasks() {
         const taskInput = document.getElementById('task-input');
         const addTaskBtn = document.getElementById('add-task-btn');
         
@@ -37,52 +51,67 @@ class DashboardManager {
             });
         }
 
-        this.loadTasks();
+        // Load tasks from API
+        await this.loadTasks();
+        
+        // Subscribe to task updates
+        if (this.state) {
+            this.state.subscribe('tasks', (tasks) => {
+                this.displayTasks(tasks);
+                this.updateCalendar();
+            });
+        }
     }
 
-    addTask() {
+    async addTask() {
         const taskInput = document.getElementById('task-input');
         const taskText = taskInput.value.trim();
         
         if (!taskText) return;
         
-        const task = {
-            id: MalleabilityApp.generateId(),
-            text: taskText,
-            completed: false,
-            createdAt: new Date().toISOString()
+        const taskData = {
+            title: taskText,
+            description: '',
+            due_date: this.formatDateForAPI(this.selectedDate),
+            priority: 'Medium',
+            completed: false
         };
         
-        this.saveTask(task);
-        this.displayTasks();
-        taskInput.value = '';
-        
-        showMessage('Task added successfully!', 'success', 2000);
-    }
-
-    saveTask(task) {
-        const dateKey = this.formatDateKey(this.selectedDate);
-        const tasks = MalleabilityApp.loadFromStorage('malleability_tasks', {});
-        
-        if (!tasks[dateKey]) {
-            tasks[dateKey] = [];
+        try {
+            if (this.state) {
+                await this.state.createTask(taskData);
+                taskInput.value = '';
+                // State will automatically trigger UI update via subscription
+                window.app?.showMessage(`Task added to ${this.selectedDate.toLocaleDateString()}!`, 'success');
+            }
+        } catch (error) {
+            console.error('Error adding task:', error);
+            window.app?.showMessage('Error adding task', 'error');
         }
-        
-        tasks[dateKey].push(task);
-        MalleabilityApp.saveToStorage('malleability_tasks', tasks);
     }
 
-    loadTasks() {
-        this.displayTasks();
+    async loadTasks() {
+        try {
+            if (this.state) {
+                await this.state.loadTasks();
+            }
+        } catch (error) {
+            console.error('Error loading tasks:', error);
+            window.app?.showMessage('Error loading tasks', 'error');
+        }
     }
 
-    displayTasks() {
+    displayTasks(allTasks = null) {
         const tasksList = document.getElementById('tasks-list');
         if (!tasksList) return;
 
-        const dateKey = this.formatDateKey(this.selectedDate);
-        const tasks = MalleabilityApp.loadFromStorage('malleability_tasks', {});
-        const dayTasks = tasks[dateKey] || [];
+        // Get tasks for selected date
+        const tasks = allTasks || this.state?.getState('tasks') || [];
+        const selectedDateStr = this.formatDateForAPI(this.selectedDate);
+        const dayTasks = tasks.filter(task => {
+            const taskDate = task.due_date ? task.due_date.split('T')[0] : null;
+            return taskDate === selectedDateStr;
+        });
         
         if (dayTasks.length === 0) {
             tasksList.innerHTML = '<li class="empty-tasks">No tasks for this day</li>';
@@ -93,48 +122,53 @@ class DashboardManager {
             <li class="task-item">
                 <div class="task-content">
                     <div class="task-checkbox ${task.completed ? 'completed' : ''}" 
-                         onclick="dashboard.toggleTask('${task.id}')"></div>
-                    <span class="task-text ${task.completed ? 'completed' : ''}">${task.text}</span>
+                         onclick="dashboard.toggleTask(${task.id})"></div>
+                    <span class="task-text ${task.completed ? 'completed' : ''}">${task.title}</span>
+                    ${task.description ? `<div class="task-description">${task.description}</div>` : ''}
+                    <div class="task-meta">
+                        <span class="task-priority priority-${task.priority?.toLowerCase()}">${task.priority}</span>
+                    </div>
                 </div>
-                <button class="task-delete" onclick="dashboard.deleteTask('${task.id}')" 
+                <button class="task-delete" onclick="dashboard.deleteTask(${task.id})" 
                         title="Delete task">×</button>
             </li>
         `).join('');
     }
 
-    toggleTask(taskId) {
-        const dateKey = this.formatDateKey(this.selectedDate);
-        const tasks = MalleabilityApp.loadFromStorage('malleability_tasks', {});
-        
-        if (tasks[dateKey]) {
-            const task = tasks[dateKey].find(t => t.id === taskId);
-            if (task) {
-                task.completed = !task.completed;
-                MalleabilityApp.saveToStorage('malleability_tasks', tasks);
-                this.displayTasks();
-                this.updateCalendar();
-                
-                if (task.completed) {
-                    showMessage('Task completed! 🎉', 'success', 2000);
+    async toggleTask(taskId) {
+        try {
+            if (this.state) {
+                const tasks = this.state.getState('tasks');
+                const task = tasks.find(t => t.id === taskId);
+                if (task) {
+                    await this.state.updateTask(taskId, { 
+                        ...task, 
+                        completed: !task.completed 
+                    });
+                    
+                    if (!task.completed) {
+                        // Task was just completed - add XP
+                        this.addXP(10);
+                        window.app?.showMessage('Task completed! +10 XP 🎉', 'success');
+                    }
                 }
             }
+        } catch (error) {
+            console.error('Error toggling task:', error);
+            window.app?.showMessage('Error updating task', 'error');
         }
     }
 
-    deleteTask(taskId) {
-        const dateKey = this.formatDateKey(this.selectedDate);
-        const tasks = MalleabilityApp.loadFromStorage('malleability_tasks', {});
+    async deleteTask(taskId) {
+        if (!confirm('Are you sure you want to delete this task?')) return;
         
-        if (tasks[dateKey]) {
-            tasks[dateKey] = tasks[dateKey].filter(t => t.id !== taskId);
-            if (tasks[dateKey].length === 0) {
-                delete tasks[dateKey];
+        try {
+            if (this.state) {
+                await this.state.deleteTask(taskId);
             }
-            MalleabilityApp.saveToStorage('malleability_tasks', tasks);
-            this.displayTasks();
-            this.updateCalendar();
-            
-            showMessage('Task deleted', 'info', 2000);
+        } catch (error) {
+            console.error('Error deleting task:', error);
+            window.app?.showMessage('Error deleting task', 'error');
         }
     }
 
@@ -199,7 +233,7 @@ class DashboardManager {
         // Previous month's trailing days
         for (let i = startingDayOfWeek - 1; i >= 0; i--) {
             const day = daysInPrevMonth - i;
-            html += `<div class="calendar-day other-month">${day}</div>`;
+            html += `<div class="calendar-day prev-month">${day}</div>`;
         }
         
         // Current month's days
@@ -209,19 +243,14 @@ class DashboardManager {
             const isSelected = this.isSameDate(date, this.selectedDate);
             const hasTasks = this.dateHasTasks(date);
             
-            let classes = 'calendar-day';
-            if (isToday) classes += ' today';
-            if (hasTasks) classes += ' has-tasks';
-            
-            html += `<div class="${classes}" onclick="dashboard.selectDate(${year}, ${month}, ${day})">${day}</div>`;
+            html += `<div class="calendar-day ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''} ${hasTasks ? 'has-tasks' : ''}" 
+                          onclick="dashboard.selectDate(${year}, ${month}, ${day})">${day}</div>`;
         }
         
         // Next month's leading days
-        const totalCells = Math.ceil((startingDayOfWeek + daysInMonth) / 7) * 7;
-        const remainingCells = totalCells - (startingDayOfWeek + daysInMonth);
-        
+        const remainingCells = 42 - (startingDayOfWeek + daysInMonth);
         for (let day = 1; day <= remainingCells; day++) {
-            html += `<div class="calendar-day other-month">${day}</div>`;
+            html += `<div class="calendar-day next-month">${day}</div>`;
         }
         
         gridElement.innerHTML = html;
@@ -229,9 +258,9 @@ class DashboardManager {
 
     selectDate(year, month, day) {
         this.selectedDate = new Date(year, month, day);
+        this.updateCalendar();
         this.updateCurrentDate();
         this.displayTasks();
-        this.updateCalendar();
     }
 
     isToday(date) {
@@ -246,31 +275,50 @@ class DashboardManager {
     }
 
     dateHasTasks(date) {
-        const dateKey = this.formatDateKey(date);
-        const tasks = MalleabilityApp.loadFromStorage('malleability_tasks', {});
-        return tasks[dateKey] && tasks[dateKey].length > 0;
+        const tasks = this.state?.getState('tasks') || [];
+        const dateStr = this.formatDateForAPI(date);
+        return tasks.some(task => {
+            const taskDate = task.due_date ? task.due_date.split('T')[0] : null;
+            return taskDate === dateStr;
+        });
+    }
+
+    formatDateForAPI(date) {
+        return date.toISOString().split('T')[0]; // YYYY-MM-DD format
     }
 
     formatDateKey(date) {
-        return date.toISOString().split('T')[0];
+        return date.toISOString().split('T')[0]; // Same as API format
     }
 
     updateCurrentDate() {
-        const dateElement = document.getElementById('current-date');
-        if (dateElement) {
-            dateElement.textContent = MalleabilityApp.formatDate(this.selectedDate);
+        const currentDateElement = document.getElementById('current-date');
+        if (currentDateElement) {
+            const isToday = this.isToday(this.selectedDate);
+            const dateText = this.selectedDate.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            if (isToday) {
+                currentDateElement.innerHTML = `${dateText} <span style="color: #48bb78; font-weight: 600;">(Today)</span>`;
+            } else {
+                currentDateElement.innerHTML = `${dateText} <span style="color: #667eea; font-size: 0.9rem;">(Selected)</span>`;
+            }
         }
     }
 
-    // XP System
+    // XP System - Enhanced with API integration
     initializeXPSystem() {
-        const xpBtns = document.querySelectorAll('.xp-btn');
+        const xpButtons = document.querySelectorAll('.xp-btn');
         const resetBtn = document.getElementById('reset-level');
         
-        xpBtns.forEach(btn => {
+        xpButtons.forEach(btn => {
             btn.addEventListener('click', () => {
-                const xpValue = parseInt(btn.getAttribute('data-xp'));
-                this.addXP(xpValue);
+                const xpAmount = parseInt(btn.getAttribute('data-xp'));
+                this.addXP(xpAmount);
             });
         });
         
@@ -279,36 +327,71 @@ class DashboardManager {
         }
         
         this.loadXPData();
+        
+        // Subscribe to user updates for XP changes
+        if (this.state) {
+            this.state.subscribe('user', (user) => {
+                if (user) {
+                    this.updateXPDisplay(user.level, user.xp);
+                }
+            });
+        }
     }
 
     loadXPData() {
-        const xpData = MalleabilityApp.loadFromStorage('malleability_xp', { level: 1, xp: 0 });
-        this.updateXPDisplay(xpData.level, xpData.xp);
+        const user = this.state?.getState('user');
+        if (user) {
+            this.updateXPDisplay(user.level || 1, user.xp || 0);
+        } else {
+            // Fallback to localStorage if no user data
+            const level = MalleabilityApp.loadFromStorage('malleability_level', 1);
+            const xp = MalleabilityApp.loadFromStorage('malleability_xp', 0);
+            this.updateXPDisplay(level, xp);
+        }
     }
 
-    addXP(amount) {
-        const xpData = MalleabilityApp.loadFromStorage('malleability_xp', { level: 1, xp: 0 });
-        const oldLevel = xpData.level;
-        
-        xpData.xp += amount;
-        
-        // Check for level up
-        while (xpData.xp >= this.getXPNeededForLevel(xpData.level + 1)) {
-            xpData.level++;
+    async addXP(amount) {
+        try {
+            if (this.state) {
+                const oldUser = this.state.getState('user');
+                const result = await this.state.updateUserProgress(amount);
+                
+                // Check for level up
+                if (result.level > (oldUser?.level || 1)) {
+                    this.showLevelUpAnimation(result.level);
+                }
+            } else {
+                // Fallback to localStorage
+                const currentXP = MalleabilityApp.loadFromStorage('malleability_xp', 0);
+                const currentLevel = MalleabilityApp.loadFromStorage('malleability_level', 1);
+                
+                const newXP = currentXP + amount;
+                let newLevel = currentLevel;
+                
+                // Check for level up
+                while (newXP >= this.getXPNeededForLevel(newLevel + 1)) {
+                    newLevel++;
+                }
+                
+                MalleabilityApp.saveToStorage('malleability_xp', newXP);
+                MalleabilityApp.saveToStorage('malleability_level', newLevel);
+                
+                this.updateXPDisplay(newLevel, newXP);
+                
+                if (newLevel > currentLevel) {
+                    this.showLevelUpAnimation(newLevel);
+                }
+                
+                window.app?.showMessage(`+${amount} XP earned!`, 'success');
+            }
+        } catch (error) {
+            console.error('Error adding XP:', error);
+            window.app?.showMessage('Error updating XP', 'error');
         }
-        
-        MalleabilityApp.saveToStorage('malleability_xp', xpData);
-        this.updateXPDisplay(xpData.level, xpData.xp);
-        
-        if (xpData.level > oldLevel) {
-            this.showLevelUpAnimation(xpData.level);
-        }
-        
-        showMessage(`+${amount} XP earned!`, 'success', 2000);
     }
 
     getXPNeededForLevel(level) {
-        return level * (level + 1) * 50;
+        return (level - 1) * 100; // 0, 100, 200, 300, etc.
     }
 
     updateXPDisplay(level, currentXP) {
@@ -320,48 +403,62 @@ class DashboardManager {
         if (levelElement) levelElement.textContent = level;
         if (xpElement) xpElement.textContent = currentXP;
         
-        const xpNeeded = this.getXPNeededForLevel(level + 1);
+        const xpForNextLevel = this.getXPNeededForLevel(level + 1);
         const xpForCurrentLevel = this.getXPNeededForLevel(level);
         const xpInCurrentLevel = currentXP - xpForCurrentLevel;
-        const xpNeededForNext = xpNeeded - xpForCurrentLevel;
+        const xpNeededForNext = xpForNextLevel - xpForCurrentLevel;
         
-        if (xpNeededElement) xpNeededElement.textContent = xpNeeded;
+        if (xpNeededElement) xpNeededElement.textContent = xpForNextLevel;
         
         if (progressElement) {
             const progressPercent = (xpInCurrentLevel / xpNeededForNext) * 100;
-            progressElement.style.width = `${Math.max(0, Math.min(100, progressPercent))}%`;
+            progressElement.style.width = `${Math.min(progressPercent, 100)}%`;
         }
     }
 
     showLevelUpAnimation(newLevel) {
-        showMessage(`🎉 Level Up! You reached Level ${newLevel}!`, 'success', 4000);
+        window.app?.showMessage(`🎉 Level Up! You reached Level ${newLevel}! 🎉`, 'success', 4000);
         
-        // Add a celebration effect
-        const levelElement = document.getElementById('current-level');
-        if (levelElement) {
-            levelElement.style.animation = 'none';
+        // Add some visual celebration
+        const xpWidget = document.querySelector('.xp-widget');
+        if (xpWidget) {
+            xpWidget.classList.add('level-up-celebration');
             setTimeout(() => {
-                levelElement.style.animation = 'pulse 0.6s ease-in-out 3';
-            }, 10);
+                xpWidget.classList.remove('level-up-celebration');
+            }, 2000);
         }
     }
 
-    resetLevel() {
-        if (confirm('Are you sure you want to reset your level? This cannot be undone.')) {
-            const xpData = { level: 1, xp: 0 };
-            MalleabilityApp.saveToStorage('malleability_xp', xpData);
-            this.updateXPDisplay(1, 0);
-            showMessage('Level reset to 1', 'info');
+    async resetLevel() {
+        if (!confirm('Are you sure you want to reset your level and XP?')) return;
+        
+        try {
+            if (this.state) {
+                // Reset to 0 XP (which should set level to 1)
+                const user = this.state.getState('user');
+                if (user) {
+                    await this.state.updateUserProgress(-user.xp);
+                }
+            } else {
+                MalleabilityApp.saveToStorage('malleability_level', 1);
+                MalleabilityApp.saveToStorage('malleability_xp', 0);
+                this.updateXPDisplay(1, 0);
+            }
+            
+            window.app?.showMessage('Level and XP reset!', 'info');
+        } catch (error) {
+            console.error('Error resetting level:', error);
+            window.app?.showMessage('Error resetting level', 'error');
         }
     }
 
-    // Quotes System
-    initializeQuotes() {
+    // Quotes System - API Integration
+    async initializeQuotes() {
         const newQuoteBtn = document.getElementById('new-quote-btn');
         const addQuoteBtn = document.getElementById('add-quote-btn');
+        const deleteQuoteBtn = document.getElementById('delete-quote-btn');
         const saveQuoteBtn = document.getElementById('save-quote-btn');
         const cancelQuoteBtn = document.getElementById('cancel-quote-btn');
-        const deleteQuoteBtn = document.getElementById('delete-quote-btn');
         
         if (newQuoteBtn) {
             newQuoteBtn.addEventListener('click', () => this.showRandomQuote());
@@ -369,6 +466,10 @@ class DashboardManager {
         
         if (addQuoteBtn) {
             addQuoteBtn.addEventListener('click', () => this.showAddQuoteForm());
+        }
+        
+        if (deleteQuoteBtn) {
+            deleteQuoteBtn.addEventListener('click', () => this.deleteSelectedQuote());
         }
         
         if (saveQuoteBtn) {
@@ -379,45 +480,72 @@ class DashboardManager {
             cancelQuoteBtn.addEventListener('click', () => this.hideAddQuoteForm());
         }
         
-        if (deleteQuoteBtn) {
-            deleteQuoteBtn.addEventListener('click', () => this.deleteSelectedQuote());
+        // Load quotes from API
+        await this.loadQuotes();
+        
+        // Get quotes from state and display immediately
+        const quotes = this.state?.getState('quotes') || [];
+        this.updateQuoteSelector(quotes);
+        if (quotes.length > 0) {
+            this.showRandomQuote(quotes);
+        } else {
+            this.displayQuote("No quotes available. Add some quotes to get started!", "Malleability Team");
         }
         
-        this.loadQuotes();
-        this.showRandomQuote();
+        // Subscribe to quote updates for future changes
+        if (this.state) {
+            this.state.subscribe('quotes', (quotes) => {
+                this.updateQuoteSelector(quotes);
+                if (quotes.length > 0) {
+                    this.showRandomQuote(quotes);
+                }
+            });
+        }
     }
 
-    loadQuotes() {
-        const customQuotes = MalleabilityApp.loadFromStorage('malleability_custom_quotes', []);
-        this.allQuotes = [...this.quotes, ...customQuotes];
-        this.updateQuoteSelector();
+    async loadQuotes() {
+        try {
+            if (this.state) {
+                await this.state.loadQuotes();
+            }
+        } catch (error) {
+            console.error('Error loading quotes:', error);
+            window.app?.showMessage('Error loading quotes', 'error');
+        }
     }
 
-    updateQuoteSelector() {
+    updateQuoteSelector(quotes = null) {
         const selector = document.getElementById('quote-selector');
         if (!selector) return;
         
-        const customQuotes = MalleabilityApp.loadFromStorage('malleability_custom_quotes', []);
+        const allQuotes = quotes || this.state?.getState('quotes') || [];
         
         selector.innerHTML = '<option value="">Select a quote to manage...</option>';
-        customQuotes.forEach((quote, index) => {
+        allQuotes.forEach((quote, index) => {
             const truncatedText = quote.text.length > 50 ? 
                 quote.text.substring(0, 50) + '...' : quote.text;
-            selector.innerHTML += `<option value="${index}">${truncatedText}</option>`;
+            selector.innerHTML += `<option value="${quote.id}">${truncatedText} - ${quote.author}</option>`;
         });
     }
 
-    showRandomQuote() {
-        if (this.allQuotes.length === 0) return;
+    showRandomQuote(quotes = null) {
+        const allQuotes = quotes || this.state?.getState('quotes') || [];
         
-        const randomIndex = Math.floor(Math.random() * this.allQuotes.length);
-        const quote = this.allQuotes[randomIndex];
+        if (allQuotes.length === 0) {
+            this.displayQuote("No quotes available. Add some quotes to get started!", "Malleability Team");
+            return;
+        }
         
+        const randomQuote = allQuotes[Math.floor(Math.random() * allQuotes.length)];
+        this.displayQuote(randomQuote.text, randomQuote.author);
+    }
+
+    displayQuote(text, author) {
         const quoteText = document.getElementById('quote-text');
         const quoteAuthor = document.getElementById('quote-author');
         
-        if (quoteText) quoteText.textContent = quote.text;
-        if (quoteAuthor) quoteAuthor.textContent = quote.author;
+        if (quoteText) quoteText.textContent = `"${text}"`;
+        if (quoteAuthor) quoteAuthor.textContent = `— ${author}`;
     }
 
     showAddQuoteForm() {
@@ -430,53 +558,62 @@ class DashboardManager {
 
     hideAddQuoteForm() {
         const form = document.getElementById('add-quote-form');
-        if (form) {
-            form.classList.add('hidden');
-            document.getElementById('quote-input').value = '';
-            document.getElementById('author-input').value = '';
-        }
+        const quoteInput = document.getElementById('quote-input');
+        const authorInput = document.getElementById('author-input');
+        
+        if (form) form.classList.add('hidden');
+        if (quoteInput) quoteInput.value = '';
+        if (authorInput) authorInput.value = '';
     }
 
-    saveCustomQuote() {
+    async saveCustomQuote() {
         const quoteInput = document.getElementById('quote-input');
         const authorInput = document.getElementById('author-input');
         
         const quoteText = quoteInput.value.trim();
-        const authorText = authorInput.value.trim();
+        const authorName = authorInput.value.trim();
         
-        if (!quoteText || !authorText) {
-            showMessage('Please fill in both quote and author fields', 'error');
+        if (!quoteText || !authorName) {
+            window.app?.showMessage('Please fill in both quote and author fields', 'error');
             return;
         }
         
-        const customQuotes = MalleabilityApp.loadFromStorage('malleability_custom_quotes', []);
-        const newQuote = { text: quoteText, author: authorText };
+        const quoteData = {
+            text: quoteText,
+            author: authorName,
+            category: 'custom'
+        };
         
-        customQuotes.push(newQuote);
-        MalleabilityApp.saveToStorage('malleability_custom_quotes', customQuotes);
-        
-        this.loadQuotes();
-        this.hideAddQuoteForm();
-        showMessage('Custom quote added successfully!', 'success');
+        try {
+            if (this.state) {
+                await this.state.createQuote(quoteData);
+                this.hideAddQuoteForm();
+                // State subscription will automatically update the UI
+            }
+        } catch (error) {
+            console.error('Error saving quote:', error);
+            window.app?.showMessage('Error saving quote', 'error');
+        }
     }
 
-    deleteSelectedQuote() {
+    async deleteSelectedQuote() {
         const selector = document.getElementById('quote-selector');
-        const selectedIndex = selector.value;
-        
-        if (selectedIndex === '') {
-            showMessage('Please select a quote to delete', 'error');
+        if (!selector || !selector.value) {
+            window.app?.showMessage('Please select a quote to delete', 'error');
             return;
         }
         
-        if (confirm('Are you sure you want to delete this quote?')) {
-            const customQuotes = MalleabilityApp.loadFromStorage('malleability_custom_quotes', []);
-            customQuotes.splice(parseInt(selectedIndex), 1);
-            MalleabilityApp.saveToStorage('malleability_custom_quotes', customQuotes);
-            
-            this.loadQuotes();
-            selector.value = '';
-            showMessage('Quote deleted successfully', 'success');
+        if (!confirm('Are you sure you want to delete this quote?')) return;
+        
+        try {
+            if (this.state) {
+                await this.state.deleteQuote(selector.value);
+                selector.value = '';
+                // State subscription will automatically update the UI
+            }
+        } catch (error) {
+            console.error('Error deleting quote:', error);
+            window.app?.showMessage('Error deleting quote', 'error');
         }
     }
 }
@@ -484,7 +621,11 @@ class DashboardManager {
 // Initialize dashboard when page loads
 let dashboard;
 document.addEventListener('DOMContentLoaded', () => {
-    dashboard = new DashboardManager();
+    // Wait for the main app to initialize before starting dashboard
+    setTimeout(() => {
+        dashboard = new DashboardManager();
+        window.dashboard = dashboard; // Make it globally accessible for onclick handlers
+    }, 300); // Increased timeout to ensure app is fully loaded
 });
 
 // Add CSS animation for level up effect

@@ -1,6 +1,6 @@
 # 📚 Malleability Study Dashboard
 
-A beautiful, minimalistic study dashboard with task management, XP tracking, motivational quotes, and comprehensive subject resources. Built with vanilla HTML, CSS, and JavaScript for optimal performance and scalability.
+A beautiful, minimalistic study dashboard with task management, XP tracking, motivational quotes, and comprehensive subject resources. Built with vanilla HTML, CSS, and JavaScript for optimal performance and scalability. Now powered by Node.js and SQLite for scalable data management.
 
 ## ✨ Features
 
@@ -194,4 +194,228 @@ This project is open source and available under the MIT License.
 - ✅ 100+ individual topic pages with extensive content
 - ✅ Interactive quiz system with XP integration
 - ✅ Profile system with Google auth and demo mode
-- ✅ Beautiful, responsive design with pastel themes 
+- ✅ Beautiful, responsive design with pastel themes
+
+# Malleability Study Dashboard
+
+A comprehensive educational platform with task management, XP tracking, and subject learning. Now powered by Node.js and SQLite for scalable data management.
+
+## 🚀 Features
+
+- **📚 Multi-Subject Learning**: Biology, Chemistry, Physics, Mathematics, Latin, Music Theory, Psychology, Politics, and Programming
+- **✅ Task Management**: Create, update, and track study tasks with priorities and deadlines
+- **🎯 XP & Leveling System**: Gamified learning with progressive XP requirements (100, 200, 300 XP per level)
+- **💡 Motivational Quotes**: Inspirational quotes with add/delete functionality
+- **📅 Calendar Integration**: Compact calendar view for task scheduling
+- **🔍 Topic Breakdown**: Hierarchical organization with 4 categories per subject, 3 topics per category
+- **🎨 Beautiful UI**: Glass-morphism design with subject-specific gradient colors
+- **🗄️ Database Storage**: SQLite database for scalable data management
+- **🌐 RESTful API**: Full API backend for data operations
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **HTML5**: Semantic structure with modern layouts
+- **CSS3**: Glass-morphism effects, gradients, responsive design
+- **JavaScript (ES6+)**: Modern async/await, modular architecture
+- **Responsive Design**: Mobile-friendly interface
+
+### Backend
+- **Node.js**: Server runtime
+- **Express.js**: Web framework
+- **SQLite**: Lightweight database
+- **RESTful API**: Clean API endpoints
+
+## 📁 Project Structure
+
+```
+malleability-dashboard/
+├── 📄 server.js              # Main Express server
+├── 📄 package.json           # Node.js dependencies
+├── 📁 database/              # Database files
+│   ├── 📄 schema.sql         # Database schema
+│   ├── 📄 init.js            # Database initialization
+│   ├── 📄 seed.js            # Sample data seeding
+│   └── 📄 malleability.db    # SQLite database (created after setup)
+├── 📁 css/                   # Stylesheets
+│   ├── 📄 main.css           # Core styles & homepage
+│   ├── 📄 subjects.css       # Subject pages styling
+│   └── 📄 profile.css        # Profile page styling
+├── 📁 js/                    # JavaScript modules
+│   ├── 📄 main.js            # Core app with API integration
+│   ├── 📄 auth.js            # Authentication handling
+│   └── 📄 quiz.js            # Quiz functionality
+├── 📁 pages/                 # HTML pages
+│   ├── 📄 [subject].html     # 10 main subject pages
+│   ├── 📄 profile.html       # User profile & settings
+│   └── 📁 [subject]/         # Detailed topic pages
+│       └── 📁 [category]/
+│           └── 📄 [topic].html
+└── 📄 index.html             # Main dashboard page
+```
+
+## 🚀 Quick Start
+
+### Prerequisites
+- **Node.js** (v14 or higher)
+- **npm** (comes with Node.js)
+
+### Installation
+
+1. **Clone or download** the project files
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Initialize the database**:
+   ```bash
+   npm run init-db
+   ```
+
+4. **Seed the database** with sample data:
+   ```bash
+   npm run seed-db
+   ```
+
+5. **Start the server**:
+   ```bash
+   npm start
+   ```
+
+6. **Open your browser** and go to `http://localhost:3000`
+
+### Development Mode
+
+For development with auto-restart:
+```bash
+npm run dev
+```
+
+## 🗄️ Database Schema
+
+The SQLite database includes the following tables:
+
+- **users**: User profiles with XP and level tracking
+- **subjects**: Subject information (Biology, Chemistry, etc.)
+- **topics**: Learning topics organized by subject and category
+- **topic_pages**: Detailed content for each topic
+- **topic_quizzes**: Quiz questions for topics
+- **tasks**: User tasks with priorities and deadlines
+- **quotes**: Motivational quotes system
+- **user_progress**: Progress tracking for completed topics
+
+## 🌐 API Endpoints
+
+### Users
+- `GET /api/user` - Get current user data
+- `PUT /api/user/progress` - Update user XP and level
+
+### Subjects & Topics
+- `GET /api/subjects` - Get all subjects
+- `GET /api/subjects/:id/topics` - Get topics for a subject
+
+### Tasks
+- `GET /api/tasks` - Get all tasks
+- `POST /api/tasks` - Create new task
+- `PUT /api/tasks/:id` - Update task
+- `DELETE /api/tasks/:id` - Delete task
+
+### Quotes
+- `GET /api/quotes` - Get active quotes
+- `POST /api/quotes` - Add new quote
+- `DELETE /api/quotes/:id` - Delete quote
+
+## 📚 Subject Coverage
+
+### Implemented Subjects (with detailed topic pages):
+- **🧬 Biology**: Cell Biology, Genetics, Evolution, Ecology
+- **⚗️ Chemistry**: Atomic Structure, Chemical Bonding, Reactions
+- **⚛️ Physics**: Mechanics, Thermodynamics, Electricity & Magnetism, Waves
+- **🔢 Mathematics**: Algebra, Calculus, Geometry, Statistics
+- **🏛️ Latin**: Grammar, Vocabulary, Literature, Roman Culture
+- **🎵 Music Theory**: Fundamentals, Harmony, Composition, Analysis
+- **🧠 Psychology**: Cognitive, Behavioral, Developmental, Social
+- **🏛️ Politics**: Political Theory, Comparative Politics, International Relations, Political Economy
+- **💻 Programming**: Data Structures, OOP, Algorithms, Web Development
+
+### Each Subject Features:
+- ✅ **4 main categories** with 3 topics each
+- ✅ **Comprehensive topic pages** with detailed content
+- ✅ **Interactive quizzes** for knowledge testing
+- ✅ **Learning resources** (textbooks, videos, tools, apps)
+- ✅ **Practice exams** with multiple difficulty levels
+- ✅ **Beautiful visual design** with subject-specific styling
+
+## 🎯 XP & Leveling System
+
+- **Level 1**: 0-99 XP
+- **Level 2**: 100-299 XP  
+- **Level 3**: 300-599 XP
+- **Level 4**: 600-999 XP
+- And so on with progressive requirements...
+
+### XP Sources:
+- Completing topics: 25 XP
+- Finishing quizzes: 15 XP
+- Daily login bonus: 5 XP
+- Completing tasks: 10 XP
+
+## 🎨 Design Features
+
+- **Glass-morphism Effects**: Modern translucent design
+- **Subject-Specific Colors**: Each subject has unique gradients
+- **Responsive Layout**: Works on desktop, tablet, and mobile
+- **Smooth Animations**: Hover effects and transitions
+- **Dark/Light Themes**: Automatic theme adaptation
+- **Compact Calendar**: Space-efficient task scheduling
+
+## 🔧 Configuration
+
+### Database
+- SQLite database is stored in `database/malleability.db`
+- Schema is defined in `database/schema.sql`
+- Sample data in `database/seed.js`
+
+### Server
+- Default port: 3000
+- Can be changed via `PORT` environment variable
+
+## 📈 Future Enhancements
+
+- [ ] User authentication with Google OAuth
+- [ ] Real-time progress synchronization
+- [ ] Advanced quiz analytics
+- [ ] Study streaks and achievements
+- [ ] Collaborative study features
+- [ ] Mobile app version
+- [ ] Offline mode support
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🆘 Support
+
+If you encounter any issues:
+
+1. **Check the console** for error messages
+2. **Ensure database is initialized**: `npm run init-db`
+3. **Verify Node.js version**: Should be v14+
+4. **Check if port 3000 is available**
+
+For additional help, please create an issue in the repository.
+
+---
+
+**Status**: ✅ Production Ready with Database Integration  
+**Version**: 2.0.0  
+**Last Updated**: December 2024 

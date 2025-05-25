@@ -1,14 +1,143 @@
 // Profile management functionality
 class ProfileManager {
     constructor() {
+        this.state = null;
+        this.currentUser = null;
         this.initializeProfile();
     }
 
-    initializeProfile() {
+    async initializeProfile() {
+        // Wait for app initialization
+        await this.waitForApp();
+        
+        // Load user and show profile section
+        await this.loadUserProfile();
         this.initializeProfileActions();
         this.initializeProfileForm();
         this.initializeAvatarUpload();
-        this.loadSavedProfile();
+        
+        // Show profile section and hide auth section
+        this.showProfileSection();
+        await this.loadStatistics();
+    }
+
+    async waitForApp() {
+        return new Promise((resolve) => {
+            const checkApp = () => {
+                if (window.app && window.app.state) {
+                    this.state = window.app.state;
+                    resolve();
+                } else {
+                    setTimeout(checkApp, 100);
+                }
+            };
+            checkApp();
+        });
+    }
+
+    async loadUserProfile() {
+        try {
+            // Load user from database
+            await this.state.loadUser();
+            this.currentUser = this.state.getState('user');
+            
+            if (this.currentUser) {
+                this.updateProfileDisplay();
+            }
+        } catch (error) {
+            console.error('Error loading user profile:', error);
+            window.app?.showMessage('Error loading profile', 'error');
+        }
+    }
+
+    updateProfileDisplay() {
+        if (!this.currentUser) return;
+
+        // Update profile name and email
+        const profileName = document.getElementById('profile-name');
+        const profileEmail = document.getElementById('profile-email');
+        const profileAvatar = document.getElementById('profile-avatar');
+
+        if (profileName) {
+            profileName.textContent = this.currentUser.name || 'Student';
+        }
+
+        if (profileEmail) {
+            profileEmail.textContent = this.currentUser.email || 'student@malleability.com';
+        }
+
+        if (profileAvatar) {
+            // Show user initials if no avatar
+            const initials = this.getInitials(this.currentUser.name || 'Student');
+            profileAvatar.innerHTML = `<div class="avatar-initials">${initials}</div>`;
+        }
+
+        // Update basic stats
+        const statLevel = document.getElementById('stat-level');
+        const statXP = document.getElementById('stat-xp');
+
+        if (statLevel) {
+            statLevel.textContent = this.currentUser.level || 1;
+        }
+
+        if (statXP) {
+            statXP.textContent = this.currentUser.xp || 0;
+        }
+    }
+
+    async loadStatistics() {
+        try {
+            // Load additional data for statistics
+            await this.state.loadTasks();
+            await this.state.loadQuotes();
+
+            const tasks = this.state.getState('tasks');
+            const quotes = this.state.getState('quotes');
+
+            // Update statistics display
+            const statTasks = document.getElementById('stat-tasks');
+            const statQuotes = document.getElementById('stat-quotes');
+
+            if (statTasks && tasks) {
+                const completedTasks = tasks.filter(task => task.completed).length;
+                statTasks.textContent = completedTasks;
+            }
+
+            if (statQuotes && quotes) {
+                const customQuotes = quotes.filter(quote => quote.category === 'custom').length;
+                statQuotes.textContent = customQuotes;
+            }
+        } catch (error) {
+            console.error('Error loading statistics:', error);
+        }
+    }
+
+    showProfileSection() {
+        const authSection = document.getElementById('auth-section');
+        const profileSection = document.getElementById('profile-section');
+
+        if (authSection) {
+            authSection.style.display = 'none';
+        }
+
+        if (profileSection) {
+            profileSection.classList.remove('hidden');
+            profileSection.style.display = 'block';
+        }
+    }
+
+    hideProfileSection() {
+        const authSection = document.getElementById('auth-section');
+        const profileSection = document.getElementById('profile-section');
+
+        if (authSection) {
+            authSection.style.display = 'block';
+        }
+
+        if (profileSection) {
+            profileSection.classList.add('hidden');
+            profileSection.style.display = 'none';
+        }
     }
 
     initializeProfileActions() {
@@ -270,8 +399,15 @@ class ProfileManager {
     handleLogout() {
         // Show confirmation dialog
         if (confirm('Are you sure you want to logout?')) {
-            app.logout();
-            showMessage('You have been logged out', 'info');
+            // Use the app's logout method
+            if (window.app) {
+                window.app.logout();
+            }
+            
+            // Hide profile section and show auth section
+            this.hideProfileSection();
+            
+            window.app?.showMessage('You have been logged out', 'info');
         }
     }
 
